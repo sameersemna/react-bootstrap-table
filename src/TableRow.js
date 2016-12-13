@@ -72,13 +72,17 @@ class TableRow extends Component {
 
     if (this.props.selectRow && (this.props.selectRow.clickToSelect ||
       this.props.selectRow.clickToSelectAndEditCell) ||
-      (this.props.onRowClick || this.props.onRowDoubleClick)) {
+      (this.props.onRowClick || this.props.onRowDoubleClick) ||
+      this.props.nestedRows) {
       return (
         <tr { ...trCss }
             onMouseOver={ this.rowMouseOver }
             onMouseOut={ this.rowMouseOut }
             onClick={ this.rowClick }
-            onDoubleClick={ this.rowDoubleClick }>{ this.props.children }</tr>
+            onDoubleClick={ this.rowDoubleClick }
+            data-is-nested={ this.props.isNested }
+            data-nesting-level={ this.props.level }
+            data-nesting-parent={ this.props.parent }>{ this.props.children }</tr>
       );
     } else {
       return (
@@ -96,10 +100,12 @@ TableRow.propTypes = {
   onSelectRow: PropTypes.func,
   onRowMouseOut: PropTypes.func,
   onRowMouseOver: PropTypes.func,
-  unselectableRow: PropTypes.bool
+  unselectableRow: PropTypes.bool,
+  nestedRows: PropTypes.bool
 };
 TableRow.defaultProps = {
   onRowClick: undefined,
-  onRowDoubleClick: undefined
+  onRowDoubleClick: undefined,
+  nestedRows: false
 };
 export default TableRow;

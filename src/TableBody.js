@@ -97,6 +97,8 @@ const mapTableRows = function(data, r, unselectable,
   if (isFun(object.props.trClassName)) {
     trClassName = object.props.trClassName(data, r);
   }
+  const dataNesting = data.data_nesting ? data.data_nesting : { level: 0, parent: null };
+  const isNested = object.props.nestedRows && dataNesting.parent !== false;
   const result = [ <TableRow isSelected={ selected } key={ key } className={ trClassName }
                 ref={ key }
                 index={ r }
@@ -107,7 +109,11 @@ const mapTableRows = function(data, r, unselectable,
                 onRowMouseOver={ object.handleRowMouseOver }
                 onRowMouseOut={ object.handleRowMouseOut }
                 onSelectRow={ object.handleSelectRow }
-                unselectableRow={ disable }>
+                unselectableRow={ disable }
+                nestedRows={ object.props.nestedRows }
+                level={ dataNesting.level }
+                parent={ dataNesting.parent }
+                isNested={ isNested }>
         { selectRowColumn }
         { tableColumns }
       </TableRow> ];
@@ -255,6 +261,13 @@ class TableBody extends Component {
         this.props.adjustHeaderWidth();
       });
     }
+
+    if (this.props.nestedRows) {
+      const rowsChildren = document.querySelectorAll('[data-nesting-parent="' + rowKey + '"]');
+      rowsChildren.forEach((row) => {
+        row.classList.toggle('shown');
+      });
+    }
     onRowClick(selectedRow);
   }
 
@@ -356,6 +369,7 @@ TableBody.propTypes = {
   tableBodyClass: PropTypes.string,
   bodyContainerClass: PropTypes.string,
   resizable: PropTypes.bool,
+  nestedRows: PropTypes.bool,
   expandableRow: PropTypes.func,
   expandComponent: PropTypes.func,
   expandRowBgColor: PropTypes.string,

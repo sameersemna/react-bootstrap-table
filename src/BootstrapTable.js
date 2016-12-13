@@ -330,7 +330,8 @@ class BootstrapTable extends Component {
             onSelectRow={ this.handleSelectRow }
             noDataText={ this.props.options.noDataText }
             adjustHeaderWidth={ this._adjustHeaderWidth }
-            resizable={ this.props.resizable } />
+            resizable={ this.props.resizable }
+            nestedRows={ this.props.nestedRows } />
           { this.props.footerData && <TableFooter ref='footer'
             bodyContainerClass={ this.props.bodyContainerClass }
             tableFooterClass={ this.props.tableBodyClass }
@@ -1231,7 +1232,8 @@ BootstrapTable.propTypes = {
   csvFileName: PropTypes.oneOfType([ PropTypes.string, PropTypes.func ]),
   ignoreSinglePage: PropTypes.bool,
   expandableRow: PropTypes.func,
-  expandComponent: PropTypes.func
+  expandComponent: PropTypes.func,
+  nestedRows: PropTypes.bool
 };
 BootstrapTable.defaultProps = {
   expandComponent: undefined,
@@ -1331,7 +1333,8 @@ BootstrapTable.defaultProps = {
   },
   exportCSV: false,
   csvFileName: 'spreadsheet.csv',
-  ignoreSinglePage: false
+  ignoreSinglePage: false,
+  nestedRows: false
 };
 
 export default BootstrapTable;

@@ -273,3 +273,17 @@
   font-weight: normal;
   font-size: 11px;
 }
+
+tr[data-is-nested="true"]{
+  display: none;
+  background-color: #eee;
+}
+tr[data-is-nested="true"].shown{
+  display: table-row;
+}
+tr[data-nesting-level="1"] > td:first-child {
+  padding-left: calc(1 * 25px);
+}
+tr[data-nesting-level="2"] > td:first-child {
+  padding-left: calc(2 * 25px);
+}
