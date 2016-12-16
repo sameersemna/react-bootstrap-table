@@ -51,6 +51,7 @@ export default class NestedRow extends React.Component {
       <BootstrapTable data={ products }
         options={ options }
         nestedRows={ true }
+        nestedRowsOptions={ { showCaret: true } }
         search>
         <TableHeaderColumn dataField='id' isKey={ true }>Product ID</TableHeaderColumn>
         <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>

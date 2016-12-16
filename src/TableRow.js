@@ -6,6 +6,9 @@ class TableRow extends Component {
   constructor(props) {
     super(props);
     this.clickNum = 0;
+    this.state = {
+      childrenShown: this.props.childrenShown
+    };
   }
 
   rowClick = e => {
@@ -31,6 +34,9 @@ class TableRow extends Component {
           }, 200);
         }
       }
+      this.setState({
+        childrenShown: !this.state.childrenShown
+      });
       if (this.props.onRowClick) this.props.onRowClick(rowIndex);
     }
   }
@@ -82,7 +88,8 @@ class TableRow extends Component {
             onDoubleClick={ this.rowDoubleClick }
             data-is-nested={ this.props.isNested }
             data-nesting-level={ this.props.level }
-            data-nesting-parent={ this.props.parent }>{ this.props.children }</tr>
+            data-nesting-parent={ this.props.parent }
+            data-nesting-children-shown={ this.state.childrenShown }>{ this.props.children }</tr>
       );
     } else {
       return (

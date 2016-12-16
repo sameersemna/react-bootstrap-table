@@ -91,12 +91,17 @@ class TableColumn extends Component {
           className={ className }
           colSpan={ colSpan }
           { ...opts }>
+        { this.props.nestedRowsOptions.showCaret && this.props.colNo === 0
+          && <span className='caret-right'></span> }
         { typeof children === 'boolean' ? children.toString() : children }
       </td>
     );
   }
 }
 TableColumn.propTypes = {
+  colNo: PropTypes.number,
+  nestedRows: PropTypes.bool,
+  nestedRowsOptions: PropTypes.object,
   rIndex: PropTypes.number,
   dataAlign: PropTypes.string,
   hidden: PropTypes.bool,

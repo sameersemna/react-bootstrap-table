@@ -276,14 +276,45 @@
 
 tr[data-is-nested="true"]{
   display: none;
-  background-color: #eee;
 }
 tr[data-is-nested="true"].shown{
   display: table-row;
 }
+tr[data-nesting-level="1"] {
+  background-color: #F8F8F8;
+}
+tr[data-nesting-level="2"] {
+  background-color: #F0F0F0;
+}
 tr[data-nesting-level="1"] > td:first-child {
-  padding-left: calc(1 * 25px);
+  padding-left: calc(2 * 10px);
 }
 tr[data-nesting-level="2"] > td:first-child {
-  padding-left: calc(2 * 25px);
+  padding-left: calc(3 * 10px);
+}
+
+.caret-right {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
+  border-left: 4px solid;
+  opacity: 0.3;
+}
+td > .caret, td > .caret-right{
+  margin-right: 5px;
+}
+tr[data-nesting-children-shown="true"] td > .caret-right{
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  opacity: 1;
 }
