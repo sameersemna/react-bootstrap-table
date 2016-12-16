@@ -102,7 +102,9 @@ const mapTableRows = function(data, r, unselectable,
   }
   const dataNesting = data.data_nesting ? data.data_nesting : { level: 0, parent: null };
   const isNested = object.props.nestedRows && dataNesting.parent !== false;
-  const result = [ <TableRow isSelected={ selected } key={ key } className={ trClassName }
+  const dataChildren = data._data_children ? data._data_children : [];
+
+  let result = [ <TableRow isSelected={ selected } key={ key } className={ trClassName }
                 ref={ key }
                 index={ r }
                 selectRow={ isSelectRowDefined ? object.props.selectRow : undefined }
@@ -121,6 +123,15 @@ const mapTableRows = function(data, r, unselectable,
         { selectRowColumn }
         { tableColumns }
       </TableRow> ];
+
+  if (dataChildren.length > 0) {
+    const childResult = [];
+    dataChildren.forEach((dataChild) => {
+      childResult.push(mapTableRows(dataChild, r, unselectable,
+          isSelectRowDefined, inputType, CustomComponent, object));
+    });
+    result = result.concat(childResult);
+  }
 
   if (object.props.expandableRow && object.props.expandableRow(data)) {
     let colSpan = object.props.columns.length;
