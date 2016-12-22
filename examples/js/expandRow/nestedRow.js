@@ -11,15 +11,15 @@ function getRand(max) {
 function getProducts(quantity, level, parentId) {
   const prods = [];
   for (let i = 0; i < quantity; ) {
-    const rowId = level + '_' + i;
+    const rowId = parentId !== false ? parentId + '_' + i : i;
     prods.push({
       id: rowId,
       name: 'Item name ' + i,
       price: 2100 + i,
       level: 'Level ' + level,
       parent: parentId,
-      data_nesting: { level: level, parent: parentId },
-      _data_children: level < 2 ? getProducts(getRand(10), level + 1, rowId) : []
+      _data_nesting: { level: level, parent: parentId, hasChildren: level < 5 ? true : false },
+      _data_children: level < 5 ? getProducts(getRand(3), level + 1, rowId) : []
     });
     i++;
   }
@@ -29,7 +29,7 @@ function getProducts(quantity, level, parentId) {
 function addProducts(quantity) {
   products = getProducts(quantity, 0, false);
 }
-addProducts(50);
+addProducts(5);
 console.dir(products);
 
 export default class NestedRow extends React.Component {

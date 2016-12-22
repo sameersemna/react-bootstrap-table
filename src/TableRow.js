@@ -12,7 +12,13 @@ class TableRow extends Component {
   }
 
   rowClick = e => {
-    if (e.target.tagName !== 'INPUT' &&
+    // SHS disable row click on caret click
+    if (e.target.className === 'caret-right') {
+      this.setState({
+        childrenShown: !this.state.childrenShown
+      });
+      if (this.props.onCaretClick) this.props.onCaretClick(this.props.rowId);
+    } else if (e.target.tagName !== 'INPUT' &&
         e.target.tagName !== 'SELECT' &&
         e.target.tagName !== 'TEXTAREA') {
       const rowIndex = this.props.index + 1;
@@ -34,9 +40,6 @@ class TableRow extends Component {
           }, 200);
         }
       }
-      this.setState({
-        childrenShown: !this.state.childrenShown
-      });
       if (this.props.onRowClick) this.props.onRowClick(rowIndex);
     }
   }
@@ -86,9 +89,12 @@ class TableRow extends Component {
             onMouseOut={ this.rowMouseOut }
             onClick={ this.rowClick }
             onDoubleClick={ this.rowDoubleClick }
+            data-row-index={ this.props.index }
+            data-row-id={ this.props.rowId }
             data-is-nested={ this.props.isNested }
             data-nesting-level={ this.props.level }
             data-nesting-parent={ this.props.parent }
+            data-nesting-has-children={ this.props.hasChildren }
             data-nesting-children-shown={ this.state.childrenShown }>{ this.props.children }</tr>
       );
     } else {

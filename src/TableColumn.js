@@ -60,6 +60,10 @@ class TableColumn extends Component {
       e);
   }
 
+  caretClick = e => {
+    // console.dir(this.props);
+  }
+
   render() {
     const {
       children,
@@ -91,8 +95,8 @@ class TableColumn extends Component {
           className={ className }
           colSpan={ colSpan }
           { ...opts }>
-        { this.props.nestedRowsOptions.showCaret && this.props.colNo === 0
-          && <span className='caret-right'></span> }
+        { this.props.nestedRowsOptions && this.props.nestedRowsOptions.showCaret && this.props.colNo === 0
+          && <span className='caret-right' onClick={ this.caretClick }></span> }
         { typeof children === 'boolean' ? children.toString() : children }
       </td>
     );

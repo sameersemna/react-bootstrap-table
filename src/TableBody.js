@@ -6,6 +6,8 @@ import TableEditColumn from './TableEditColumn';
 import classSet from 'classnames';
 import ExpandComponent from './ExpandComponent';
 
+let rowId;
+
 const isFun = function(obj) {
   return obj && (typeof obj === 'function');
 };
@@ -100,7 +102,8 @@ const mapTableRows = function(data, r, unselectable,
   if (isFun(object.props.trClassName)) {
     trClassName = object.props.trClassName(data, r);
   }
-  const dataNesting = data.data_nesting ? data.data_nesting : { level: 0, parent: null };
+  const dataNesting = data._data_nesting ?
+      data._data_nesting : { level: 0, parent: null, hasChildren: false };
   const isNested = object.props.nestedRows && dataNesting.parent !== false;
   const dataChildren = data._data_children ? data._data_children : [];
 
@@ -110,6 +113,7 @@ const mapTableRows = function(data, r, unselectable,
                 selectRow={ isSelectRowDefined ? object.props.selectRow : undefined }
                 enableCellEdit={ object.props.cellEdit.mode !== Const.CELL_EDIT_NONE }
                 onRowClick={ object.handleRowClick }
+                onCaretClick={ object.handleCaretClick }
                 onRowDoubleClick={ object.handleRowDoubleClick }
                 onRowMouseOver={ object.handleRowMouseOver }
                 onRowMouseOut={ object.handleRowMouseOut }
@@ -117,7 +121,9 @@ const mapTableRows = function(data, r, unselectable,
                 unselectableRow={ disable }
                 nestedRows={ object.props.nestedRows }
                 level={ dataNesting.level }
+                rowId={ key }
                 parent={ dataNesting.parent }
+                hasChildren={ dataNesting.hasChildren }
                 isNested={ isNested }
                 childrenShown={ false }>
         { selectRowColumn }
@@ -126,10 +132,18 @@ const mapTableRows = function(data, r, unselectable,
 
   if (dataChildren.length > 0) {
     const childResult = [];
-    dataChildren.forEach((dataChild) => {
+
+    /* dataChildren.forEach((dataChild) => {
       childResult.push(mapTableRows(dataChild, r, unselectable,
           isSelectRowDefined, inputType, CustomComponent, object));
+    }); */
+
+    dataChildren.map((dataChild) => {
+      rowId++;
+      childResult.push(mapTableRows(dataChild, rowId, unselectable,
+          isSelectRowDefined, inputType, CustomComponent, object));
     });
+
     result = result.concat(childResult);
   }
 
@@ -151,6 +165,31 @@ const mapTableRows = function(data, r, unselectable,
     );
   }
   return (result);
+};
+
+const getSelectedRowById = function(data, rowid) {
+  let selectedRow;
+  data.some((row) => {
+    if (row.id === rowid) {
+      selectedRow = row;
+      return true;
+    } else if (row._data_children && row._data_children.length > 0) {
+      selectedRow = getSelectedRowById(row._data_children, rowid);
+      return selectedRow ? true : false;
+    }
+  });
+  return selectedRow;
+};
+
+const getSelectedRowByIndex = function(data, rowIndex) {
+  let selectedRow;
+  data.some((row, i) => {
+    if (i === rowIndex - 1) {
+      selectedRow = row;
+      return true;
+    }
+  });
+  return selectedRow;
 };
 
 class TableBody extends Component {
@@ -179,8 +218,9 @@ class TableBody extends Component {
     const CustomComponent = this.props.selectRow.customComponent;
 
     const tableRows = this.props.data.map((data, r) => {
+      rowId = r === 0 ? 0 : rowId + r;
       return mapTableRows(
-        data, r, unselectable,
+        data, rowId, unselectable,
         isSelectRowDefined, inputType, CustomComponent,
         this
       );
@@ -256,14 +296,12 @@ class TableBody extends Component {
     this.props.onRowMouseOver(targetRow, event);
   }
 
-  handleRowClick = rowIndex => {
+  handleRowClick = (rowIndex) => {
     let selectedRow;
     const { data, onRowClick } = this.props;
-    data.forEach((row, i) => {
-      if (i === rowIndex - 1) {
-        selectedRow = row;
-      }
-    });
+
+    selectedRow = getSelectedRowByIndex(data, rowIndex);
+
     const rowKey = selectedRow[this.props.keyField];
     if (this.props.expandableRow) {
       let expanding = this.state.expanding;
@@ -276,20 +314,32 @@ class TableBody extends Component {
         this.props.adjustHeaderWidth();
       });
     }
+    onRowClick(selectedRow);
+  }
 
+  handleCaretClick = (rowDataId) => {
+    let selectedRow;
+    const { data } = this.props;
+
+    selectedRow = getSelectedRowById(data, rowDataId);
+
+    const rowKey = selectedRow[this.props.keyField];
     if (this.props.nestedRows) {
       const rowsChildren = document.querySelectorAll(`[data-nesting-parent="${rowKey}"]`);
       rowsChildren.forEach((row) => {
         row.classList.toggle('shown');
       });
-      const grandChildLevel = selectedRow.data_nesting.level + 2;
+
+      // const grandChildLevel = selectedRow.data_nesting.level + 2;
+      /*
+      const nestLevel = selectedRow.data_nesting ? selectedRow.data_nesting.level : 0;
       const rowsGrandChildren
-          = document.querySelectorAll(`[data-nesting-level="${grandChildLevel}"]`);
+          = document.querySelectorAll(`tr:not([data-nesting-level="${nestLevel}"])`);
       rowsGrandChildren.forEach((row) => {
         row.classList.remove('shown');
       });
+      */
     }
-    onRowClick(selectedRow);
   }
 
   handleRowDoubleClick = rowIndex => {

@@ -292,6 +292,15 @@ tr[data-nesting-level="1"] > td:first-child {
 tr[data-nesting-level="2"] > td:first-child {
   padding-left: calc(3 * 10px);
 }
+tr[data-nesting-level="3"] > td:first-child {
+  padding-left: calc(4 * 10px);
+}
+tr[data-nesting-level="4"] > td:first-child {
+  padding-left: calc(5 * 10px);
+}
+tr[data-nesting-level="5"] > td:first-child {
+  padding-left: calc(6 * 10px);
+}
 
 .caret-right {
   display: inline-block;
@@ -317,4 +326,7 @@ tr[data-nesting-children-shown="true"] td > .caret-right{
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
   opacity: 1;
+}
+tr[data-nesting-has-children="false"] td > .caret-right {
+    display: none;
 }
