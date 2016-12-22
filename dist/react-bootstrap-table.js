@@ -613,7 +613,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            onSelectRow: this.handleSelectRow,
 	            noDataText: this.props.options.noDataText,
 	            adjustHeaderWidth: this._adjustHeaderWidth,
-	            resizable: this.props.resizable }),
+	            resizable: this.props.resizable,
+	            nestedRows: this.props.nestedRows,
+	            nestedRowsOptions: this.props.nestedRowsOptions }),
 	          this.props.footerData && _react2.default.createElement(_TableFooter2.default, { ref: 'footer',
 	            bodyContainerClass: this.props.bodyContainerClass,
 	            tableFooterClass: this.props.tableBodyClass,
@@ -1563,7 +1565,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  csvFileName: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.func]),
 	  ignoreSinglePage: _react.PropTypes.bool,
 	  expandableRow: _react.PropTypes.func,
-	  expandComponent: _react.PropTypes.func
+	  expandComponent: _react.PropTypes.func,
+	  nestedRows: _react.PropTypes.bool,
+	  nestedRowsOptions: _react.PropTypes.object
 	};
 	BootstrapTable.defaultProps = {
 	  expandComponent: undefined,
@@ -1663,7 +1667,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  exportCSV: false,
 	  csvFileName: 'spreadsheet.csv',
-	  ignoreSinglePage: false
+	  ignoreSinglePage: false,
+	  nestedRows: false,
+	  nestedRowsOptions: {}
 	};
 
 	var _default = BootstrapTable;
@@ -2137,6 +2143,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var rowId = void 0;
+
 	var isFun = function isFun(obj) {
 	  return obj && typeof obj === 'function';
 	};
@@ -2193,6 +2201,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _react2.default.createElement(
 	      _TableColumn2.default,
 	      { key: i,
+	        colNo: i,
+	        nestedRows: object.props.nestedRows,
+	        nestedRowsOptions: object.props.nestedRowsOptions,
 	        rIndex: r,
 	        dataAlign: column.align,
 	        className: tdClassName,
@@ -2220,6 +2231,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (isFun(object.props.trClassName)) {
 	    trClassName = object.props.trClassName(data, r);
 	  }
+	  var dataNesting = data._data_nesting ? data._data_nesting : { level: 0, parent: null, hasChildren: false };
+	  var isNested = object.props.nestedRows && dataNesting.parent !== false;
+	  var dataChildren = data._data_children ? data._data_children : [];
+
 	  var result = [_react2.default.createElement(
 	    _TableRow2.default,
 	    { isSelected: selected, key: key, className: trClassName,
@@ -2228,14 +2243,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	      selectRow: isSelectRowDefined ? object.props.selectRow : undefined,
 	      enableCellEdit: object.props.cellEdit.mode !== _Const2.default.CELL_EDIT_NONE,
 	      onRowClick: object.handleRowClick,
+	      onCaretClick: object.handleCaretClick,
 	      onRowDoubleClick: object.handleRowDoubleClick,
 	      onRowMouseOver: object.handleRowMouseOver,
 	      onRowMouseOut: object.handleRowMouseOut,
 	      onSelectRow: object.handleSelectRow,
-	      unselectableRow: disable },
+	      unselectableRow: disable,
+	      nestedRows: object.props.nestedRows,
+	      level: dataNesting.level,
+	      rowId: key,
+	      parent: dataNesting.parent,
+	      hasChildren: dataNesting.hasChildren,
+	      isNested: isNested,
+	      childrenShown: false },
 	    selectRowColumn,
 	    tableColumns
 	  )];
+
+	  if (dataChildren.length > 0) {
+	    (function () {
+	      var childResult = [];
+
+	      /* dataChildren.forEach((dataChild) => {
+	        childResult.push(mapTableRows(dataChild, r, unselectable,
+	            isSelectRowDefined, inputType, CustomComponent, object));
+	      }); */
+
+	      dataChildren.map(function (dataChild) {
+	        rowId++;
+	        childResult.push(mapTableRows(dataChild, rowId, unselectable, isSelectRowDefined, inputType, CustomComponent, object));
+	      });
+
+	      result = result.concat(childResult);
+	    })();
+	  }
 
 	  if (object.props.expandableRow && object.props.expandableRow(data)) {
 	    var colSpan = object.props.columns.length;
@@ -2257,6 +2298,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return result;
 	};
 
+	var getSelectedRowById = function getSelectedRowById(data, rowid) {
+	  var selectedRow = void 0;
+	  data.some(function (row) {
+	    if (row.id === rowid) {
+	      selectedRow = row;
+	      return true;
+	    } else if (row._data_children && row._data_children.length > 0) {
+	      selectedRow = getSelectedRowById(row._data_children, rowid);
+	      return selectedRow ? true : false;
+	    }
+	  });
+	  return selectedRow;
+	};
+
 	var TableBody = function (_Component) {
 	  _inherits(TableBody, _Component);
 
@@ -2275,6 +2330,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    _this.handleRowClick = function () {
 	      return _this.__handleRowClick__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
+	    _this.handleCaretClick = function () {
+	      return _this.__handleCaretClick__REACT_HOT_LOADER__.apply(_this, arguments);
 	    };
 
 	    _this.handleRowDoubleClick = function () {
@@ -2324,7 +2383,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var CustomComponent = this.props.selectRow.customComponent;
 
 	      var tableRows = this.props.data.map(function (data, r) {
-	        return mapTableRows(data, r, unselectable, isSelectRowDefined, inputType, CustomComponent, _this2);
+	        rowId = r;
+	        if (_this2.props.nestedRows) {
+	          rowId = r === 0 ? 0 : rowId + r;
+	        }
+	        return mapTableRows(data, rowId, unselectable, isSelectRowDefined, inputType, CustomComponent, _this2);
 	      });
 
 	      if (tableRows.length === 0) {
@@ -2436,6 +2499,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	      }
 	      onRowClick(selectedRow);
+	    }
+	  }, {
+	    key: '__handleCaretClick__REACT_HOT_LOADER__',
+	    value: function __handleCaretClick__REACT_HOT_LOADER__(rowDataId) {
+	      var selectedRow = void 0;
+	      var data = this.props.data;
+
+
+	      selectedRow = getSelectedRowById(data, rowDataId);
+
+	      var rowKey = selectedRow[this.props.keyField];
+	      if (this.props.nestedRows) {
+	        var rowsChildren = document.querySelectorAll('[data-nesting-parent="' + rowKey + '"]');
+	        rowsChildren.forEach(function (row) {
+	          row.classList.toggle('shown');
+	        });
+
+	        // const grandChildLevel = selectedRow.data_nesting.level + 2;
+	        /*
+	        const nestLevel = selectedRow.data_nesting ? selectedRow.data_nesting.level : 0;
+	        const rowsGrandChildren
+	            = document.querySelectorAll(`tr:not([data-nesting-level="${nestLevel}"])`);
+	        rowsGrandChildren.forEach((row) => {
+	          row.classList.remove('shown');
+	        });
+	        */
+	      }
 	    }
 	  }, {
 	    key: '__handleRowDoubleClick__REACT_HOT_LOADER__',
@@ -2552,6 +2642,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  tableBodyClass: _react.PropTypes.string,
 	  bodyContainerClass: _react.PropTypes.string,
 	  resizable: _react.PropTypes.bool,
+	  nestedRows: _react.PropTypes.bool,
+	  nestedRowsOptions: _react.PropTypes.object,
 	  expandableRow: _react.PropTypes.func,
 	  expandComponent: _react.PropTypes.func,
 	  expandRowBgColor: _react.PropTypes.string,
@@ -2566,11 +2658,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return;
 	  }
 
+	  __REACT_HOT_LOADER__.register(rowId, 'rowId', '/Users/sameer/www/test/react/react-bootstrap-table/src/TableBody.js');
+
 	  __REACT_HOT_LOADER__.register(isFun, 'isFun', '/Users/sameer/www/test/react/react-bootstrap-table/src/TableBody.js');
 
 	  __REACT_HOT_LOADER__.register(mapColumns, 'mapColumns', '/Users/sameer/www/test/react/react-bootstrap-table/src/TableBody.js');
 
 	  __REACT_HOT_LOADER__.register(mapTableRows, 'mapTableRows', '/Users/sameer/www/test/react/react-bootstrap-table/src/TableBody.js');
+
+	  __REACT_HOT_LOADER__.register(getSelectedRowById, 'getSelectedRowById', '/Users/sameer/www/test/react/react-bootstrap-table/src/TableBody.js');
 
 	  __REACT_HOT_LOADER__.register(TableBody, 'TableBody', '/Users/sameer/www/test/react/react-bootstrap-table/src/TableBody.js');
 
@@ -2634,6 +2730,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    _this.clickNum = 0;
+	    _this.state = {
+	      childrenShown: _this.props.childrenShown
+	    };
 	    return _this;
 	  }
 
@@ -2642,7 +2741,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function __rowClick__REACT_HOT_LOADER__(e) {
 	      var _this2 = this;
 
-	      if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT' && e.target.tagName !== 'TEXTAREA') {
+	      // SHS disable row click on caret click
+	      if (e.target.className === 'caret-right') {
+	        this.setState({
+	          childrenShown: !this.state.childrenShown
+	        });
+	        if (this.props.onCaretClick) this.props.onCaretClick(this.props.rowId);
+	      } else if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT' && e.target.tagName !== 'TEXTAREA') {
 	        (function () {
 	          var rowIndex = _this2.props.index + 1;
 	          var _props = _this2.props,
@@ -2707,14 +2812,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	        className: (0, _classnames2.default)(this.props.isSelected ? this.props.selectRow.className : null, this.props.className)
 	      };
 
-	      if (this.props.selectRow && (this.props.selectRow.clickToSelect || this.props.selectRow.clickToSelectAndEditCell) || this.props.onRowClick || this.props.onRowDoubleClick) {
+	      if (this.props.selectRow && (this.props.selectRow.clickToSelect || this.props.selectRow.clickToSelectAndEditCell) || this.props.onRowClick || this.props.onRowDoubleClick || this.props.nestedRows) {
 	        return _react2.default.createElement(
 	          'tr',
 	          _extends({}, trCss, {
 	            onMouseOver: this.rowMouseOver,
 	            onMouseOut: this.rowMouseOut,
 	            onClick: this.rowClick,
-	            onDoubleClick: this.rowDoubleClick }),
+	            onDoubleClick: this.rowDoubleClick,
+	            'data-row-index': this.props.index,
+	            'data-row-id': this.props.rowId,
+	            'data-is-nested': this.props.isNested,
+	            'data-nesting-level': this.props.level,
+	            'data-nesting-parent': this.props.parent,
+	            'data-nesting-has-children': this.props.hasChildren,
+	            'data-nesting-children-shown': this.state.childrenShown }),
 	          this.props.children
 	        );
 	      } else {
@@ -2739,11 +2851,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  onSelectRow: _react.PropTypes.func,
 	  onRowMouseOut: _react.PropTypes.func,
 	  onRowMouseOver: _react.PropTypes.func,
-	  unselectableRow: _react.PropTypes.bool
+	  unselectableRow: _react.PropTypes.bool,
+	  nestedRows: _react.PropTypes.bool
 	};
 	TableRow.defaultProps = {
 	  onRowClick: undefined,
-	  onRowDoubleClick: undefined
+	  onRowDoubleClick: undefined,
+	  nestedRows: false
 	};
 	var _default = TableRow;
 	exports.default = _default;
@@ -2805,6 +2919,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _this.__handleCellEdit__REACT_HOT_LOADER__.apply(_this, arguments);
 	    };
 
+	    _this.caretClick = function () {
+	      return _this.__caretClick__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
 	    return _this;
 	  }
 	  /* eslint no-unused-vars: [0, { "args": "after-used" }] */
@@ -2855,6 +2973,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.props.onEdit(this.props.rIndex + 1, e.currentTarget.cellIndex, e);
 	    }
 	  }, {
+	    key: '__caretClick__REACT_HOT_LOADER__',
+	    value: function __caretClick__REACT_HOT_LOADER__(e) {
+	      // console.dir(this.props);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
@@ -2888,6 +3011,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          className: className,
 	          colSpan: colSpan
 	        }, opts),
+	        this.props.nestedRowsOptions && this.props.nestedRowsOptions.showCaret && this.props.colNo === 0 && _react2.default.createElement('span', { className: 'caret-right', onClick: this.caretClick }),
 	        typeof children === 'boolean' ? children.toString() : children
 	      );
 	    }
@@ -2897,6 +3021,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_react.Component);
 
 	TableColumn.propTypes = {
+	  colNo: _react.PropTypes.number,
+	  nestedRows: _react.PropTypes.bool,
+	  nestedRowsOptions: _react.PropTypes.object,
 	  rIndex: _react.PropTypes.number,
 	  dataAlign: _react.PropTypes.string,
 	  hidden: _react.PropTypes.bool,
