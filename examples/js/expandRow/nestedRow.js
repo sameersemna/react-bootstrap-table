@@ -19,7 +19,7 @@ function getProducts(quantity, level, parentId) {
       level: 'Level ' + level,
       parent: parentId,
       _data_nesting: { level: level, parent: parentId, hasChildren: level < 5 ? true : false },
-      _data_children: level < 5 ? getProducts(getRand(3), level + 1, rowId) : []
+      _data_children: level < 5 ? getProducts(getRand(5), level + 1, rowId) : []
     });
     i++;
   }
@@ -29,8 +29,8 @@ function getProducts(quantity, level, parentId) {
 function addProducts(quantity) {
   products = getProducts(quantity, 0, false);
 }
-addProducts(5);
-console.dir(products);
+addProducts(10);
+// console.dir(products);
 
 export default class NestedRow extends React.Component {
   constructor(props) {

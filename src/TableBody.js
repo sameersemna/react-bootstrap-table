@@ -181,17 +181,6 @@ const getSelectedRowById = function(data, rowid) {
   return selectedRow;
 };
 
-const getSelectedRowByIndex = function(data, rowIndex) {
-  let selectedRow;
-  data.some((row, i) => {
-    if (i === rowIndex - 1) {
-      selectedRow = row;
-      return true;
-    }
-  });
-  return selectedRow;
-};
-
 class TableBody extends Component {
 
   constructor(props) {
@@ -218,7 +207,10 @@ class TableBody extends Component {
     const CustomComponent = this.props.selectRow.customComponent;
 
     const tableRows = this.props.data.map((data, r) => {
-      rowId = r === 0 ? 0 : rowId + r;
+      rowId = r;
+      if (this.props.nestedRows) {
+        rowId = r === 0 ? 0 : rowId + r;
+      }
       return mapTableRows(
         data, rowId, unselectable,
         isSelectRowDefined, inputType, CustomComponent,
@@ -299,9 +291,11 @@ class TableBody extends Component {
   handleRowClick = (rowIndex) => {
     let selectedRow;
     const { data, onRowClick } = this.props;
-
-    selectedRow = getSelectedRowByIndex(data, rowIndex);
-
+    data.forEach((row, i) => {
+      if (i === rowIndex - 1) {
+        selectedRow = row;
+      }
+    });
     const rowKey = selectedRow[this.props.keyField];
     if (this.props.expandableRow) {
       let expanding = this.state.expanding;
