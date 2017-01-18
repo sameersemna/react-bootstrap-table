@@ -313,10 +313,9 @@ class TableBody extends Component {
 
   handleCaretClick = (rowDataId) => {
     let selectedRow;
-    const { data } = this.props;
+    const { data, onCaretClick } = this.props;
 
     selectedRow = getSelectedRowById(data, rowDataId);
-
     const rowKey = selectedRow[this.props.keyField];
     if (this.props.nestedRows) {
       const rowsChildren = document.querySelectorAll(`[data-nesting-parent="${rowKey}"]`);
@@ -334,6 +333,7 @@ class TableBody extends Component {
       });
       */
     }
+    onCaretClick(selectedRow);
   }
 
   handleRowDoubleClick = rowIndex => {
@@ -439,6 +439,7 @@ TableBody.propTypes = {
   expandableRow: PropTypes.func,
   expandComponent: PropTypes.func,
   expandRowBgColor: PropTypes.string,
-  adjustHeaderWidth: PropTypes.func
+  adjustHeaderWidth: PropTypes.func,
+  onCaretClick: PropTypes.func
 };
 export default TableBody;
