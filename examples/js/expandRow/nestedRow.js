@@ -19,7 +19,8 @@ function getProducts(quantity, level, parentId) {
       level: 'Level ' + level,
       parent: parentId,
       _data_nesting: { level: level, parent: parentId, hasChildren: level < 5 ? true : false },
-      _data_children: level < 5 ? getProducts(getRand(5), level + 1, rowId) : []
+      // _data_children: level < 5 ? getProducts(getRand(5), level + 1, rowId) : []
+      _data_children: []
     });
     i++;
   }
@@ -32,22 +33,52 @@ function addProducts(quantity) {
 addProducts(10);
 // console.dir(products);
 
-function caretClick(row) {
-  console.dir(row);
-}
-
 export default class NestedRow extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      data: products
+    };
+  }
+
+  setRowById = function(tabledata, rowid) {
+    let selectedRow;
+    tabledata.some((row) => {
+      if (row.id === rowid) {
+        row._data_children = getProducts(getRand(5), row._data_nesting.level + 1, row.id);
+        selectedRow = row;
+        return true;
+      } else if (row._data_children && row._data_children.length > 0) {
+        selectedRow = this.setRowById(row._data_children, rowid);
+        return selectedRow ? true : false;
+      }
+    });
+    this.setState({
+      data: tabledata
+    });
+    return selectedRow;
+  };
+
+  caretClick(row) {
+    if (row._data_children.length === 0) {
+      this.setRowById(this.state.data, row.id);
+      // row._data_children = getProducts(getRand(5), row._data_nesting.level + 1, row.id);
+      // this.state.data[0] = row;
+
+      /* products[0] = row;
+      this.setState({
+        data: products
+      }); */
+    }
   }
 
   render() {
     const options = {
       expandRowBgColor: 'rgb(242, 255, 163)',
-      onCaretClick: caretClick
+      onCaretClick: this.caretClick.bind(this)
     };
     return (
-      <BootstrapTable data={ products }
+      <BootstrapTable data={ this.state.data }
         options={ options }
         nestedRows={ true }
         nestedRowsOptions={ { showCaret: true } }
