@@ -211,6 +211,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _this.__handleRowClick__REACT_HOT_LOADER__.apply(_this, arguments);
 	    };
 
+	    _this.handleCaretClick = function () {
+	      return _this.__handleCaretClick__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
 	    _this.handleRowDoubleClick = function () {
 	      return _this.__handleRowDoubleClick__REACT_HOT_LOADER__.apply(_this, arguments);
 	    };
@@ -607,6 +611,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            cellEdit: this.props.cellEdit,
 	            selectedRowKeys: this.state.selectedRowKeys,
 	            onRowClick: this.handleRowClick,
+	            onCaretClick: this.handleCaretClick,
 	            onRowDoubleClick: this.handleRowDoubleClick,
 	            onRowMouseOver: this.handleRowMouseOver,
 	            onRowMouseOut: this.handleRowMouseOut,
@@ -808,6 +813,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function __handleRowClick__REACT_HOT_LOADER__(row) {
 	      if (this.props.options.onRowClick) {
 	        this.props.options.onRowClick(row);
+	      }
+	    }
+	  }, {
+	    key: '__handleCaretClick__REACT_HOT_LOADER__',
+	    value: function __handleCaretClick__REACT_HOT_LOADER__(row) {
+	      if (this.props.options.onCaretClick) {
+	        this.props.options.onCaretClick(row);
 	      }
 	    }
 	  }, {
@@ -1556,7 +1568,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    closeText: _react.PropTypes.string,
 	    ignoreEditable: _react.PropTypes.bool,
 	    defaultSearch: _react.PropTypes.string,
-	    expandRowBgColor: _react.PropTypes.string
+	    expandRowBgColor: _react.PropTypes.string,
+	    onCaretClick: _react.PropTypes.func
 	  }),
 	  fetchInfo: _react.PropTypes.shape({
 	    dataTotalSize: _react.PropTypes.number
@@ -1660,7 +1673,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    closeText: _Const2.default.CLOSE_BTN_TEXT,
 	    ignoreEditable: false,
 	    defaultSearch: '',
-	    expandRowBgColor: undefined
+	    expandRowBgColor: undefined,
+	    onCaretClick: undefined
 	  },
 	  fetchInfo: {
 	    dataTotalSize: 0
@@ -2504,11 +2518,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '__handleCaretClick__REACT_HOT_LOADER__',
 	    value: function __handleCaretClick__REACT_HOT_LOADER__(rowDataId) {
 	      var selectedRow = void 0;
-	      var data = this.props.data;
+	      var _props2 = this.props,
+	          data = _props2.data,
+	          onCaretClick = _props2.onCaretClick;
 
 
 	      selectedRow = getSelectedRowById(data, rowDataId);
-
 	      var rowKey = selectedRow[this.props.keyField];
 	      if (this.props.nestedRows) {
 	        var rowsChildren = document.querySelectorAll('[data-nesting-parent="' + rowKey + '"]');
@@ -2526,14 +2541,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	        */
 	      }
+	      onCaretClick(selectedRow);
 	    }
 	  }, {
 	    key: '__handleRowDoubleClick__REACT_HOT_LOADER__',
 	    value: function __handleRowDoubleClick__REACT_HOT_LOADER__(rowIndex) {
 	      var selectedRow = void 0;
-	      var _props2 = this.props,
-	          data = _props2.data,
-	          onRowDoubleClick = _props2.onRowDoubleClick;
+	      var _props3 = this.props,
+	          data = _props3.data,
+	          onRowDoubleClick = _props3.onRowDoubleClick;
 
 	      data.forEach(function (row, i) {
 	        if (i === rowIndex - 1) {
@@ -2546,9 +2562,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '__handleSelectRow__REACT_HOT_LOADER__',
 	    value: function __handleSelectRow__REACT_HOT_LOADER__(rowIndex, isSelected, e) {
 	      var selectedRow = void 0;
-	      var _props3 = this.props,
-	          data = _props3.data,
-	          onSelectRow = _props3.onSelectRow;
+	      var _props4 = this.props,
+	          data = _props4.data,
+	          onSelectRow = _props4.onSelectRow;
 
 	      data.forEach(function (row, i) {
 	        if (i === rowIndex - 1) {
@@ -2647,7 +2663,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  expandableRow: _react.PropTypes.func,
 	  expandComponent: _react.PropTypes.func,
 	  expandRowBgColor: _react.PropTypes.string,
-	  adjustHeaderWidth: _react.PropTypes.func
+	  adjustHeaderWidth: _react.PropTypes.func,
+	  onCaretClick: _react.PropTypes.func
 	};
 	var _default = TableBody;
 	exports.default = _default;
