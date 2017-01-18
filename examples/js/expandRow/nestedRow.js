@@ -15,7 +15,7 @@ function getProducts(quantity, level, parentId) {
     prods.push({
       id: rowId,
       name: 'Item name ' + i,
-      price: 2100 + i,
+      price: 2100 + getRand(100),
       level: 'Level ' + level,
       parent: parentId,
       _data_nesting: { level: level, parent: parentId, hasChildren: level < 5 ? true : false },
@@ -32,6 +32,10 @@ function addProducts(quantity) {
 addProducts(10);
 // console.dir(products);
 
+function caretClick(row) {
+  console.dir(row);
+}
+
 export default class NestedRow extends React.Component {
   constructor(props) {
     super(props);
@@ -39,7 +43,8 @@ export default class NestedRow extends React.Component {
 
   render() {
     const options = {
-      expandRowBgColor: 'rgb(242, 255, 163)'
+      expandRowBgColor: 'rgb(242, 255, 163)',
+      onCaretClick: caretClick
     };
     return (
       <BootstrapTable data={ products }
@@ -49,7 +54,7 @@ export default class NestedRow extends React.Component {
         search>
         <TableHeaderColumn dataField='id' isKey={ true }>Product ID</TableHeaderColumn>
         <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
-        <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
+        <TableHeaderColumn dataField='price' dataSort>Product Price</TableHeaderColumn>
         <TableHeaderColumn dataField='level'>Level</TableHeaderColumn>
         <TableHeaderColumn dataField='parent'>Parent</TableHeaderColumn>
       </BootstrapTable>

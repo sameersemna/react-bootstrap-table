@@ -324,6 +324,7 @@ class BootstrapTable extends Component {
             cellEdit={ this.props.cellEdit }
             selectedRowKeys={ this.state.selectedRowKeys }
             onRowClick={ this.handleRowClick }
+            onCaretClick={ this.handleCaretClick }
             onRowDoubleClick={ this.handleRowDoubleClick }
             onRowMouseOver={ this.handleRowMouseOver }
             onRowMouseOut={ this.handleRowMouseOut }
@@ -514,6 +515,12 @@ class BootstrapTable extends Component {
   handleRowClick = row => {
     if (this.props.options.onRowClick) {
       this.props.options.onRowClick(row);
+    }
+  }
+
+  handleCaretClick = row => {
+    if (this.props.options.onCaretClick) {
+      this.props.options.onCaretClick(row);
     }
   }
 
@@ -1224,7 +1231,8 @@ BootstrapTable.propTypes = {
     closeText: PropTypes.string,
     ignoreEditable: PropTypes.bool,
     defaultSearch: PropTypes.string,
-    expandRowBgColor: PropTypes.string
+    expandRowBgColor: PropTypes.string,
+    onCaretClick: PropTypes.func
   }),
   fetchInfo: PropTypes.shape({
     dataTotalSize: PropTypes.number
@@ -1328,7 +1336,8 @@ BootstrapTable.defaultProps = {
     closeText: Const.CLOSE_BTN_TEXT,
     ignoreEditable: false,
     defaultSearch: '',
-    expandRowBgColor: undefined
+    expandRowBgColor: undefined,
+    onCaretClick: undefined
   },
   fetchInfo: {
     dataTotalSize: 0
