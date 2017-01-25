@@ -327,9 +327,6 @@ tr[data-nesting-children-shown="true"] td > .caret-right{
   border-left: 5px solid transparent;
   opacity: 1;
 }
-tr[data-nesting-has-children="false"] td > .caret-right {
-    display: none;
-}
 
 tr td > .caret-loading{
   margin-left: 2px;
@@ -346,6 +343,10 @@ tr[data-nesting-loading="true"] td > .caret-right {
 }
 tr[data-nesting-loading="false"] td > .caret-right {
   display: inline-block;
+}
+
+tr[data-nesting-has-children="false"] td > .caret-right {
+  display: none;
 }
 
 .caret-loading {
