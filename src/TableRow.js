@@ -11,13 +11,38 @@ class TableRow extends Component {
     };
   }
 
+  handleCaretClickCallback = (rowDataId, childrenShown) => {
+    if (this.props.rowId === rowDataId) {
+      this.setState({
+        childrenShown: childrenShown
+      });
+    }
+  }
+
   rowClick = e => {
     // SHS disable row click on caret click
     if (e.target.className === 'caret-right') {
-      this.setState({
-        childrenShown: !this.state.childrenShown
-      });
-      if (this.props.onCaretClick) this.props.onCaretClick(this.props.rowId);
+      if (this.props.countChildren > 0) {
+        this.setState({
+          childrenShown: !this.state.childrenShown
+        }, () => {
+          if (this.props.onCaretClick) {
+            this.props.onCaretClick(
+                this.props.rowId,
+                this.state.childrenShown,
+                this.handleCaretClickCallback
+            );
+          }
+        });
+      } else {
+        if (this.props.onCaretClick) {
+          this.props.onCaretClick(
+              this.props.rowId,
+              this.state.childrenShown,
+              this.handleCaretClickCallback
+          );
+        }
+      }
     } else if (e.target.tagName !== 'INPUT' &&
         e.target.tagName !== 'SELECT' &&
         e.target.tagName !== 'TEXTAREA') {
@@ -95,7 +120,9 @@ class TableRow extends Component {
             data-nesting-level={ this.props.level }
             data-nesting-parent={ this.props.parent }
             data-nesting-has-children={ this.props.hasChildren }
-            data-nesting-children-shown={ this.state.childrenShown }>{ this.props.children }</tr>
+            data-nesting-count-children={ this.props.countChildren }
+            data-nesting-children-shown={ this.state.childrenShown }
+            data-nesting-loading={ this.props.dataLoading }>{ this.props.children }</tr>
       );
     } else {
       return (
@@ -114,11 +141,25 @@ TableRow.propTypes = {
   onRowMouseOut: PropTypes.func,
   onRowMouseOver: PropTypes.func,
   unselectableRow: PropTypes.bool,
-  nestedRows: PropTypes.bool
+  nestedRows: PropTypes.bool,
+  rowId: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
+  isNested: PropTypes.bool,
+  level: PropTypes.number,
+  parent: PropTypes.oneOfType([ PropTypes.string, PropTypes.number, PropTypes.bool ]),
+  hasChildren: PropTypes.bool,
+  countChildren: PropTypes.number,
+  childrenShown: PropTypes.bool,
+  dataLoading: PropTypes.bool
 };
 TableRow.defaultProps = {
   onRowClick: undefined,
   onRowDoubleClick: undefined,
-  nestedRows: false
+  nestedRows: false,
+  isNested: false,
+  level: 0,
+  hasChildren: false,
+  countChildren: 0,
+  childrenShown: false,
+  dataLoading: false
 };
 export default TableRow;

@@ -103,7 +103,7 @@ const mapTableRows = function(data, r, unselectable,
     trClassName = object.props.trClassName(data, r);
   }
   const dataNesting = data._data_nesting ?
-      data._data_nesting : { level: 0, parent: null, hasChildren: false };
+      data._data_nesting : { level: 0, parent: null, hasChildren: false, loading: false };
   const isNested = object.props.nestedRows && dataNesting.parent !== false;
   const dataChildren = data._data_children ? data._data_children : [];
 
@@ -124,6 +124,8 @@ const mapTableRows = function(data, r, unselectable,
                 rowId={ key }
                 parent={ dataNesting.parent }
                 hasChildren={ dataNesting.hasChildren }
+                countChildren={ dataChildren.length }
+                dataLoading={ dataNesting.loading }
                 isNested={ isNested }
                 childrenShown={ false }>
         { selectRowColumn }
@@ -311,29 +313,66 @@ class TableBody extends Component {
     onRowClick(selectedRow);
   }
 
-  handleCaretClick = (rowDataId) => {
-    let selectedRow;
-    const { data, onCaretClick } = this.props;
-
-    selectedRow = getSelectedRowById(data, rowDataId);
+  handleCaretClick = (rowDataId, childrenShown, callback) => {
+    const { data } = this.props;
+    const selectedRow = getSelectedRowById(data, rowDataId);
     const rowKey = selectedRow[this.props.keyField];
     if (this.props.nestedRows) {
-      const rowsChildren = document.querySelectorAll(`[data-nesting-parent="${rowKey}"]`);
-      rowsChildren.forEach((row) => {
-        row.classList.toggle('shown');
-      });
-
+      this.checkChildrenShown(rowKey, childrenShown);
       // const grandChildLevel = selectedRow.data_nesting.level + 2;
-      /*
-      const nestLevel = selectedRow.data_nesting ? selectedRow.data_nesting.level : 0;
+      /* const nestLevel = selectedRow.data_nesting ? selectedRow.data_nesting.level : 0;
       const rowsGrandChildren
           = document.querySelectorAll(`tr:not([data-nesting-level="${nestLevel}"])`);
       rowsGrandChildren.forEach((row) => {
         row.classList.remove('shown');
-      });
-      */
+      }); */
     }
-    onCaretClick(selectedRow);
+    if (this.props.onCaretClick) {
+      this.props.onCaretClick(selectedRow, this.handleCaretClickCallback);
+    }
+    // callback(rowDataId, childrenShown);
+    this.tableRowCallback = callback;
+  }
+
+  handleCaretClickCallback = (row) => {
+    const rowKey = row[this.props.keyField];
+    if (this.props.nestedRows) {
+      this.checkChildrenShown(rowKey, true);
+    }
+  }
+
+  toggleShown = (rowsChildren) => {
+    rowsChildren.forEach((row) => {
+      row.classList.toggle('shown');
+    });
+  }
+
+  addShown = (rowsChildren) => {
+    rowsChildren.forEach((row) => {
+      row.classList.add('shown');
+    });
+  }
+
+  removeShown = (rowsChildren) => {
+    rowsChildren.forEach((row) => {
+      row.classList.remove('shown');
+    });
+  }
+
+  checkChildrenShown = (rowKey, childrenShown) => {
+    const rowsChildren = document.querySelectorAll(`[data-nesting-parent="${rowKey}"]`);
+    const grandChildren = document.querySelectorAll(`[data-nesting-parent^="${rowKey}_"]`);
+    if (this.tableRowCallback) this.tableRowCallback(rowKey, childrenShown);
+
+    // this.toggleShown(rowsChildren);
+    // this.toggleShown(grandChildren);
+    if (childrenShown) {
+      this.addShown(rowsChildren);
+      this.addShown(grandChildren);
+    } else {
+      this.removeShown(rowsChildren);
+      this.removeShown(grandChildren);
+    }
   }
 
   handleRowDoubleClick = rowIndex => {

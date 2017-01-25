@@ -99,6 +99,10 @@ class TableColumn extends Component {
           && this.props.nestedRowsOptions.showCaret
           && this.props.colNo === 0
           && <span className='caret-right' onClick={ this.caretClick }></span> }
+        { this.props.nestedRowsOptions
+          && this.props.nestedRowsOptions.showCaret
+          && this.props.colNo === 0
+          && <span className='caret-loading'>L</span> }
         { typeof children === 'boolean' ? children.toString() : children }
       </td>
     );

@@ -18,7 +18,7 @@ function getProducts(quantity, level, parentId) {
       price: 2100 + getRand(100),
       level: 'Level ' + level,
       parent: parentId,
-      _data_nesting: { level: level, parent: parentId, hasChildren: level < 5 ? true : false },
+      _data_nesting: { level: level, parent: parentId, hasChildren: level < 5 ? true : false, loading: false },
       // _data_children: level < 5 ? getProducts(getRand(5), level + 1, rowId) : []
       _data_children: []
     });
@@ -41,27 +41,36 @@ export default class NestedRow extends React.Component {
     };
   }
 
-  setRowById = function(tabledata, rowid) {
+  setRowById(tabledata, rowid, callback) {
+    let rowSet = false;
     let selectedRow;
     tabledata.some((row) => {
       if (row.id === rowid) {
         row._data_children = getProducts(getRand(5), row._data_nesting.level + 1, row.id);
+        row._data_nesting.loading = false;
+
         selectedRow = row;
+        rowSet = true;
         return true;
       } else if (row._data_children && row._data_children.length > 0) {
-        selectedRow = this.setRowById(row._data_children, rowid);
+        selectedRow = this.setRowById(row._data_children, rowid, callback);
         return selectedRow ? true : false;
       }
     });
     this.setState({
       data: tabledata
+    }, () => {
+      if (rowSet) {
+        callback(selectedRow);
+      }
     });
     return selectedRow;
-  };
+  }
 
-  caretClick(row) {
+  caretClick(row, callback) {
     if (row._data_children.length === 0) {
-      this.setRowById(this.state.data, row.id);
+      row._data_nesting.loading = true;
+      this.setRowById(this.state.data, row.id, callback);
       // row._data_children = getProducts(getRand(5), row._data_nesting.level + 1, row.id);
       // this.state.data[0] = row;
 

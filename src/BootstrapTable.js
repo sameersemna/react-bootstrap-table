@@ -518,9 +518,9 @@ class BootstrapTable extends Component {
     }
   }
 
-  handleCaretClick = row => {
+  handleCaretClick = (row, callback) => {
     if (this.props.options.onCaretClick) {
-      this.props.options.onCaretClick(row);
+      this.props.options.onCaretClick(row, callback);
     }
   }
 
