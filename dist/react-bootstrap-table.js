@@ -817,9 +817,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, {
 	    key: '__handleCaretClick__REACT_HOT_LOADER__',
-	    value: function __handleCaretClick__REACT_HOT_LOADER__(row) {
+	    value: function __handleCaretClick__REACT_HOT_LOADER__(row, callback) {
 	      if (this.props.options.onCaretClick) {
-	        this.props.options.onCaretClick(row);
+	        this.props.options.onCaretClick(row, callback);
 	      }
 	    }
 	  }, {
@@ -2245,7 +2245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (isFun(object.props.trClassName)) {
 	    trClassName = object.props.trClassName(data, r);
 	  }
-	  var dataNesting = data._data_nesting ? data._data_nesting : { level: 0, parent: null, hasChildren: false };
+	  var dataNesting = data._data_nesting ? data._data_nesting : { level: 0, parent: null, hasChildren: false, loading: false };
 	  var isNested = object.props.nestedRows && dataNesting.parent !== false;
 	  var dataChildren = data._data_children ? data._data_children : [];
 
@@ -2268,6 +2268,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      rowId: key,
 	      parent: dataNesting.parent,
 	      hasChildren: dataNesting.hasChildren,
+	      countChildren: dataChildren.length,
+	      dataLoading: dataNesting.loading,
 	      isNested: isNested,
 	      childrenShown: false },
 	    selectRowColumn,
@@ -2348,6 +2350,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    _this.handleCaretClick = function () {
 	      return _this.__handleCaretClick__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
+	    _this.handleCaretClickCallback = function () {
+	      return _this.__handleCaretClickCallback__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
+	    _this.toggleShown = function () {
+	      return _this.__toggleShown__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
+	    _this.addShown = function () {
+	      return _this.__addShown__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
+	    _this.removeShown = function () {
+	      return _this.__removeShown__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
+	    _this.checkChildrenShown = function () {
+	      return _this.__checkChildrenShown__REACT_HOT_LOADER__.apply(_this, arguments);
 	    };
 
 	    _this.handleRowDoubleClick = function () {
@@ -2516,40 +2538,80 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, {
 	    key: '__handleCaretClick__REACT_HOT_LOADER__',
-	    value: function __handleCaretClick__REACT_HOT_LOADER__(rowDataId) {
-	      var selectedRow = void 0;
-	      var _props2 = this.props,
-	          data = _props2.data,
-	          onCaretClick = _props2.onCaretClick;
+	    value: function __handleCaretClick__REACT_HOT_LOADER__(rowDataId, childrenShown, callback) {
+	      var data = this.props.data;
 
-
-	      selectedRow = getSelectedRowById(data, rowDataId);
+	      var selectedRow = getSelectedRowById(data, rowDataId);
 	      var rowKey = selectedRow[this.props.keyField];
 	      if (this.props.nestedRows) {
-	        var rowsChildren = document.querySelectorAll('[data-nesting-parent="' + rowKey + '"]');
-	        rowsChildren.forEach(function (row) {
-	          row.classList.toggle('shown');
-	        });
-
+	        this.checkChildrenShown(rowKey, childrenShown);
 	        // const grandChildLevel = selectedRow.data_nesting.level + 2;
-	        /*
-	        const nestLevel = selectedRow.data_nesting ? selectedRow.data_nesting.level : 0;
+	        /* const nestLevel = selectedRow.data_nesting ? selectedRow.data_nesting.level : 0;
 	        const rowsGrandChildren
 	            = document.querySelectorAll(`tr:not([data-nesting-level="${nestLevel}"])`);
 	        rowsGrandChildren.forEach((row) => {
 	          row.classList.remove('shown');
-	        });
-	        */
+	        }); */
 	      }
-	      onCaretClick(selectedRow);
+	      if (this.props.onCaretClick) {
+	        this.props.onCaretClick(selectedRow, this.handleCaretClickCallback);
+	      }
+	      // callback(rowDataId, childrenShown);
+	      this.tableRowCallback = callback;
+	    }
+	  }, {
+	    key: '__handleCaretClickCallback__REACT_HOT_LOADER__',
+	    value: function __handleCaretClickCallback__REACT_HOT_LOADER__(row) {
+	      var rowKey = row[this.props.keyField];
+	      if (this.props.nestedRows) {
+	        this.checkChildrenShown(rowKey, true);
+	      }
+	    }
+	  }, {
+	    key: '__toggleShown__REACT_HOT_LOADER__',
+	    value: function __toggleShown__REACT_HOT_LOADER__(rowsChildren) {
+	      rowsChildren.forEach(function (row) {
+	        row.classList.toggle('shown');
+	      });
+	    }
+	  }, {
+	    key: '__addShown__REACT_HOT_LOADER__',
+	    value: function __addShown__REACT_HOT_LOADER__(rowsChildren) {
+	      rowsChildren.forEach(function (row) {
+	        row.classList.add('shown');
+	      });
+	    }
+	  }, {
+	    key: '__removeShown__REACT_HOT_LOADER__',
+	    value: function __removeShown__REACT_HOT_LOADER__(rowsChildren) {
+	      rowsChildren.forEach(function (row) {
+	        row.classList.remove('shown');
+	      });
+	    }
+	  }, {
+	    key: '__checkChildrenShown__REACT_HOT_LOADER__',
+	    value: function __checkChildrenShown__REACT_HOT_LOADER__(rowKey, childrenShown) {
+	      var rowsChildren = document.querySelectorAll('[data-nesting-parent="' + rowKey + '"]');
+	      var grandChildren = document.querySelectorAll('[data-nesting-parent^="' + rowKey + '_"]');
+	      if (this.tableRowCallback) this.tableRowCallback(rowKey, childrenShown);
+
+	      // this.toggleShown(rowsChildren);
+	      // this.toggleShown(grandChildren);
+	      if (childrenShown) {
+	        this.addShown(rowsChildren);
+	        this.addShown(grandChildren);
+	      } else {
+	        this.removeShown(rowsChildren);
+	        this.removeShown(grandChildren);
+	      }
 	    }
 	  }, {
 	    key: '__handleRowDoubleClick__REACT_HOT_LOADER__',
 	    value: function __handleRowDoubleClick__REACT_HOT_LOADER__(rowIndex) {
 	      var selectedRow = void 0;
-	      var _props3 = this.props,
-	          data = _props3.data,
-	          onRowDoubleClick = _props3.onRowDoubleClick;
+	      var _props2 = this.props,
+	          data = _props2.data,
+	          onRowDoubleClick = _props2.onRowDoubleClick;
 
 	      data.forEach(function (row, i) {
 	        if (i === rowIndex - 1) {
@@ -2562,9 +2624,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '__handleSelectRow__REACT_HOT_LOADER__',
 	    value: function __handleSelectRow__REACT_HOT_LOADER__(rowIndex, isSelected, e) {
 	      var selectedRow = void 0;
-	      var _props4 = this.props,
-	          data = _props4.data,
-	          onSelectRow = _props4.onSelectRow;
+	      var _props3 = this.props,
+	          data = _props3.data,
+	          onSelectRow = _props3.onSelectRow;
 
 	      data.forEach(function (row, i) {
 	        if (i === rowIndex - 1) {
@@ -2730,6 +2792,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var _this = _possibleConstructorReturn(this, (TableRow.__proto__ || Object.getPrototypeOf(TableRow)).call(this, props));
 
+	    _this.handleCaretClickCallback = function () {
+	      return _this.__handleCaretClickCallback__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
 	    _this.rowClick = function () {
 	      return _this.__rowClick__REACT_HOT_LOADER__.apply(_this, arguments);
 	    };
@@ -2754,16 +2820,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  _createClass(TableRow, [{
+	    key: '__handleCaretClickCallback__REACT_HOT_LOADER__',
+	    value: function __handleCaretClickCallback__REACT_HOT_LOADER__(rowDataId, childrenShown) {
+	      if (this.props.rowId === rowDataId) {
+	        this.setState({
+	          childrenShown: childrenShown
+	        });
+	      }
+	    }
+	  }, {
 	    key: '__rowClick__REACT_HOT_LOADER__',
 	    value: function __rowClick__REACT_HOT_LOADER__(e) {
 	      var _this2 = this;
 
 	      // SHS disable row click on caret click
 	      if (e.target.className === 'caret-right') {
-	        this.setState({
-	          childrenShown: !this.state.childrenShown
-	        });
-	        if (this.props.onCaretClick) this.props.onCaretClick(this.props.rowId);
+	        if (this.props.countChildren > 0) {
+	          this.setState({
+	            childrenShown: !this.state.childrenShown
+	          }, function () {
+	            if (_this2.props.onCaretClick) {
+	              _this2.props.onCaretClick(_this2.props.rowId, _this2.state.childrenShown, _this2.handleCaretClickCallback);
+	            }
+	          });
+	        } else {
+	          if (this.props.onCaretClick) {
+	            this.props.onCaretClick(this.props.rowId, this.state.childrenShown, this.handleCaretClickCallback);
+	          }
+	        }
 	      } else if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT' && e.target.tagName !== 'TEXTAREA') {
 	        (function () {
 	          var rowIndex = _this2.props.index + 1;
@@ -2843,7 +2927,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            'data-nesting-level': this.props.level,
 	            'data-nesting-parent': this.props.parent,
 	            'data-nesting-has-children': this.props.hasChildren,
-	            'data-nesting-children-shown': this.state.childrenShown }),
+	            'data-nesting-count-children': this.props.countChildren,
+	            'data-nesting-children-shown': this.state.childrenShown,
+	            'data-nesting-loading': this.props.dataLoading }),
 	          this.props.children
 	        );
 	      } else {
@@ -2869,12 +2955,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  onRowMouseOut: _react.PropTypes.func,
 	  onRowMouseOver: _react.PropTypes.func,
 	  unselectableRow: _react.PropTypes.bool,
-	  nestedRows: _react.PropTypes.bool
+	  nestedRows: _react.PropTypes.bool,
+	  rowId: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number]),
+	  isNested: _react.PropTypes.bool,
+	  level: _react.PropTypes.number,
+	  parent: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number, _react.PropTypes.bool]),
+	  hasChildren: _react.PropTypes.bool,
+	  countChildren: _react.PropTypes.number,
+	  childrenShown: _react.PropTypes.bool,
+	  dataLoading: _react.PropTypes.bool
 	};
 	TableRow.defaultProps = {
 	  onRowClick: undefined,
 	  onRowDoubleClick: undefined,
-	  nestedRows: false
+	  nestedRows: false,
+	  isNested: false,
+	  level: 0,
+	  hasChildren: false,
+	  countChildren: 0,
+	  childrenShown: false,
+	  dataLoading: false
 	};
 	var _default = TableRow;
 	exports.default = _default;
@@ -3029,6 +3129,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	          colSpan: colSpan
 	        }, opts),
 	        this.props.nestedRowsOptions && this.props.nestedRowsOptions.showCaret && this.props.colNo === 0 && _react2.default.createElement('span', { className: 'caret-right', onClick: this.caretClick }),
+	        this.props.nestedRowsOptions && this.props.nestedRowsOptions.showCaret && this.props.colNo === 0 && _react2.default.createElement(
+	          'span',
+	          { className: 'caret-loading' },
+	          'L'
+	        ),
 	        typeof children === 'boolean' ? children.toString() : children
 	      );
 	    }
