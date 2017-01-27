@@ -48,6 +48,7 @@ export default class NestedRow extends React.Component {
       if (row.id === rowid) {
         row._data_children = getProducts(getRand(5), row._data_nesting.level + 1, row.id);
         row._data_nesting.loading = false;
+        row._data_nesting.childrenShown = true;
 
         selectedRow = row;
         rowSet = true;
@@ -68,17 +69,18 @@ export default class NestedRow extends React.Component {
   }
 
   caretClick(row, callback) {
+    console.log(row._data_nesting.childrenShown);
     if (row._data_children.length === 0) {
       row._data_nesting.loading = true;
-      this.setRowById(this.state.data, row.id, callback);
-      // row._data_children = getProducts(getRand(5), row._data_nesting.level + 1, row.id);
-      // this.state.data[0] = row;
-
-      /* products[0] = row;
-      this.setState({
-        data: products
-      }); */
+      this.setRowById(this.state.data, row.id, this.caretClickCallback(callback));
     }
+  }
+
+  caretClickCallback(callback) {
+    return function(row) {
+      console.log(row._data_nesting.childrenShown);
+      callback(row);
+    };
   }
 
   render() {

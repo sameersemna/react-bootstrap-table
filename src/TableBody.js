@@ -103,7 +103,7 @@ const mapTableRows = function(data, r, unselectable,
     trClassName = object.props.trClassName(data, r);
   }
   const dataNesting = data._data_nesting ?
-      data._data_nesting : { level: 0, parent: null, hasChildren: false, loading: false };
+      data._data_nesting : { level: 0, parent: null, hasChildren: false, loading: false, childrenShown: false };
   const isNested = object.props.nestedRows && dataNesting.parent !== false;
   const dataChildren = data._data_children ? data._data_children : [];
 
@@ -127,7 +127,7 @@ const mapTableRows = function(data, r, unselectable,
                 countChildren={ dataChildren.length }
                 dataLoading={ dataNesting.loading }
                 isNested={ isNested }
-                childrenShown={ false }>
+                childrenShown={ dataNesting.childrenShown }>
         { selectRowColumn }
         { tableColumns }
       </TableRow> ];
@@ -317,34 +317,23 @@ class TableBody extends Component {
     const { data } = this.props;
     const selectedRow = getSelectedRowById(data, rowDataId);
     const rowKey = selectedRow[this.props.keyField];
+
     if (this.props.nestedRows) {
+      selectedRow._data_nesting.childrenShown = childrenShown;
       this.checkChildrenShown(rowKey, childrenShown);
-      // const grandChildLevel = selectedRow.data_nesting.level + 2;
-      /* const nestLevel = selectedRow.data_nesting ? selectedRow.data_nesting.level : 0;
-      const rowsGrandChildren
-          = document.querySelectorAll(`tr:not([data-nesting-level="${nestLevel}"])`);
-      rowsGrandChildren.forEach((row) => {
-        row.classList.remove('shown');
-      }); */
     }
     if (this.props.onCaretClick) {
       this.props.onCaretClick(selectedRow, this.handleCaretClickCallback);
     }
-    // callback(rowDataId, childrenShown);
     this.tableRowCallback = callback;
   }
 
   handleCaretClickCallback = (row) => {
     const rowKey = row[this.props.keyField];
     if (this.props.nestedRows) {
+      row._data_nesting.childrenShown = true;
       this.checkChildrenShown(rowKey, true);
     }
-  }
-
-  toggleShown = (rowsChildren) => {
-    rowsChildren.forEach((row) => {
-      row.classList.toggle('shown');
-    });
   }
 
   addShown = (rowsChildren) => {
