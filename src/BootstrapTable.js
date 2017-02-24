@@ -1015,7 +1015,6 @@ class BootstrapTable extends Component {
     }
     const header = this.refs.header.refs.header;
     const tbody = this.refs.body.refs.tbody;
-    const tfoot = this.refs.footer.refs.tfoot;
     const widths = [];
     for (let colId = 0; colId < header.cells.length; colId++) {
       const cell = header.cells[colId];
@@ -1026,11 +1025,15 @@ class BootstrapTable extends Component {
         tr.cells[colId].style.width = widths[colId];
       }
     });
-    tfoot.childNodes.forEach((tr) => {
-      for (let colId = 0; colId < tr.cells.length; colId++) {
-        tr.cells[colId].style.width = widths[colId];
-      }
-    });
+    // adjust footer if it exists
+    if(this.refs.footer) {
+      const tfoot = this.refs.footer.refs.tfoot;
+      tfoot.childNodes.forEach((tr) => {
+        for (let colId = 0; colId < tr.cells.length; colId++) {
+          tr.cells[colId].style.width = widths[colId];
+        }
+      });
+    }
   }
 
   _adjustHeight = () => {
