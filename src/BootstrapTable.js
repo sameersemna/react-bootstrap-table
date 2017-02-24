@@ -417,14 +417,14 @@ class BootstrapTable extends Component {
   }
 
   handleSort = (order, sortField, event) => {
-    if (this.props.options.onSortChange) {
-      this.props.options.onSortChange(sortField, order, this.props);
-    }
-
     const multiSortEnabled = (this.props.multiSort && this.props.multiSortKey) ? event[this.props.multiSortKey] : this.props.multiSort;
 
     // get multiple sorted columns
     const sortCols = this.getSortCols(order, sortField, multiSortEnabled);
+
+    if (this.props.options.onSortChange) {
+      this.props.options.onSortChange(sortField, order, multiSortEnabled, sortCols, this.props);
+    }
 
     if (this.isRemoteDataSource()) {
       this.store.setSortInfo(order, sortField);
