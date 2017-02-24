@@ -1063,7 +1063,7 @@ class BootstrapTable extends Component {
       }
     });
     // adjust footer if it exists
-    if(this.refs.footer) {
+    if (this.refs.footer) {
       const tfoot = this.refs.footer.refs.tfoot;
       tfoot.childNodes.forEach((tr) => {
         for (let colId = 0; colId < tr.cells.length; colId++) {

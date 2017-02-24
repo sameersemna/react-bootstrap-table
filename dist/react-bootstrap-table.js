@@ -703,14 +703,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '__handleSort__REACT_HOT_LOADER__',
 	    value: function __handleSort__REACT_HOT_LOADER__(order, sortField, event) {
-	      if (this.props.options.onSortChange) {
-	        this.props.options.onSortChange(sortField, order, this.props);
-	      }
-
 	      var multiSortEnabled = this.props.multiSort && this.props.multiSortKey ? event[this.props.multiSortKey] : this.props.multiSort;
 
 	      // get multiple sorted columns
 	      var sortCols = this.getSortCols(order, sortField, multiSortEnabled);
+
+	      if (this.props.options.onSortChange) {
+	        this.props.options.onSortChange(sortField, order, multiSortEnabled, sortCols, this.props);
+	      }
 
 	      if (this.isRemoteDataSource()) {
 	        this.store.setSortInfo(order, sortField);
@@ -1396,7 +1396,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      var header = this.refs.header.refs.header;
 	      var tbody = this.refs.body.refs.tbody;
-	      var tfoot = this.refs.footer.refs.tfoot;
 	      var widths = [];
 	      for (var colId = 0; colId < header.cells.length; colId++) {
 	        var cell = header.cells[colId];
@@ -1407,11 +1406,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	          tr.cells[_colId].style.width = widths[_colId];
 	        }
 	      });
-	      tfoot.childNodes.forEach(function (tr) {
-	        for (var _colId2 = 0; _colId2 < tr.cells.length; _colId2++) {
-	          tr.cells[_colId2].style.width = widths[_colId2];
-	        }
-	      });
+	      // adjust footer if it exists
+	      if (this.refs.footer) {
+	        var tfoot = this.refs.footer.refs.tfoot;
+	        tfoot.childNodes.forEach(function (tr) {
+	          for (var _colId2 = 0; _colId2 < tr.cells.length; _colId2++) {
+	            tr.cells[_colId2].style.width = widths[_colId2];
+	          }
+	        });
+	      }
 	    }
 	  }, {
 	    key: '___adjustHeight__REACT_HOT_LOADER__',
@@ -2245,7 +2248,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (isFun(object.props.trClassName)) {
 	    trClassName = object.props.trClassName(data, r);
 	  }
-	  var dataNesting = data._data_nesting ? data._data_nesting : { level: 0, parent: null, hasChildren: false, loading: false, childrenShown: false };
+	  var dataNesting = data._data_nesting ? data._data_nesting : {
+	    level: 0,
+	    parent: null,
+	    hasChildren: false,
+	    loading: false,
+	    childrenShown: false
+	  };
 	  var isNested = object.props.nestedRows && dataNesting.parent !== false;
 	  var dataChildren = data._data_children ? data._data_children : [];
 

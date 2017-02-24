@@ -103,7 +103,13 @@ const mapTableRows = function(data, r, unselectable,
     trClassName = object.props.trClassName(data, r);
   }
   const dataNesting = data._data_nesting ?
-      data._data_nesting : { level: 0, parent: null, hasChildren: false, loading: false, childrenShown: false };
+  data._data_nesting : {
+    level: 0,
+    parent: null,
+    hasChildren: false,
+    loading: false,
+    childrenShown: false
+  };
   const isNested = object.props.nestedRows && dataNesting.parent !== false;
   const dataChildren = data._data_children ? data._data_children : [];
 
