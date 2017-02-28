@@ -1039,22 +1039,22 @@ class BootstrapTable extends Component {
   _adjustHeight = () => {
     const { height } = this.props;
     let { maxHeight } = this.props;
+    const footerOffHt = this.refs.footer ? this.refs.footer.refs.container.offsetHeight : 0;
     if ((typeof height === 'number' && !isNaN(height)) || height.indexOf('%') === -1) {
       this.refs.body.refs.container.style.height =
         parseFloat(height, 10)
         - this.refs.header.refs.container.offsetHeight
-        - this.refs.footer.refs.container.offsetHeight
+        - footerOffHt
         + 'px';
     }
     if (maxHeight) {
       maxHeight = typeof maxHeight === 'number' ?
         maxHeight :
         parseInt(maxHeight.replace('px', ''), 10);
-
       this.refs.body.refs.container.style.maxHeight =
         maxHeight
         - this.refs.header.refs.container.offsetHeight
-        - this.refs.footer.refs.container.offsetHeight
+        - footerOffHt
         + 'px';
     }
   }
