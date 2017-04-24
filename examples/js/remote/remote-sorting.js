@@ -10,9 +10,12 @@ export default class RemoteSorting extends React.Component {
     return (
       <BootstrapTable data={ this.props.data }
                       remote={ true }
-                      options={ { onSortChange: this.props.onSortChange } }>
-        <TableHeaderColumn dataField='id' isKey={ true }>Product ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
+                      options={ { onSortChange: this.props.onSortChange } }
+                      multiSort={ true }
+                      multiSortKey='shiftKey'>
+        <TableHeaderColumn dataField='id' isKey={ true }
+                           dataSort={ true }>Product ID</TableHeaderColumn>
+        <TableHeaderColumn dataField='name' dataSort={ true }>Product Name</TableHeaderColumn>
         <TableHeaderColumn dataField='price' dataSort={ true }>Product Price</TableHeaderColumn>
       </BootstrapTable>
     );

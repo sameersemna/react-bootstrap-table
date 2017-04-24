@@ -427,7 +427,12 @@ class BootstrapTable extends Component {
     }
 
     if (this.isRemoteDataSource()) {
-      this.store.setSortInfo(order, sortField);
+      // this.store.setSortInfo(order, sortField);
+      this.setState({
+        sortCols: sortCols,
+        multiSortEnabled: multiSortEnabled
+      });
+      this.store.setSortInfo(sortCols);
       return;
     }
 
