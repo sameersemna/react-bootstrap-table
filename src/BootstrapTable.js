@@ -911,7 +911,8 @@ class BootstrapTable extends Component {
             nextPage={ options.nextPage || Const.NEXT_PAGE }
             firstPage={ options.firstPage || Const.FIRST_PAGE }
             lastPage={ options.lastPage || Const.LAST_PAGE }
-            hideSizePerPage={ options.hideSizePerPage }/>
+            hideSizePerPage={ options.hideSizePerPage }
+            paginationPanel={ options.paginationPanel }/>
         </div>
       );
     }
@@ -1240,7 +1241,8 @@ BootstrapTable.propTypes = {
     ignoreEditable: PropTypes.bool,
     defaultSearch: PropTypes.string,
     expandRowBgColor: PropTypes.string,
-    onCaretClick: PropTypes.func
+    onCaretClick: PropTypes.func,
+    paginationPanel: PropTypes.func
   }),
   fetchInfo: PropTypes.shape({
     dataTotalSize: PropTypes.number
@@ -1345,7 +1347,8 @@ BootstrapTable.defaultProps = {
     ignoreEditable: false,
     defaultSearch: '',
     expandRowBgColor: undefined,
-    onCaretClick: undefined
+    onCaretClick: undefined,
+    paginationPanel: undefined,
   },
   fetchInfo: {
     dataTotalSize: 0
