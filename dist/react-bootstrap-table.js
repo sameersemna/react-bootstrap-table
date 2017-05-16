@@ -65,7 +65,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _BootstrapTable2 = _interopRequireDefault(_BootstrapTable);
 
-	var _TableHeaderColumn = __webpack_require__(149);
+	var _TableHeaderColumn = __webpack_require__(150);
 
 	var _TableHeaderColumn2 = _interopRequireDefault(_TableHeaderColumn);
 
@@ -129,25 +129,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _PaginationList2 = _interopRequireDefault(_PaginationList);
 
-	var _ToolBar = __webpack_require__(139);
+	var _ToolBar = __webpack_require__(140);
 
 	var _ToolBar2 = _interopRequireDefault(_ToolBar);
 
-	var _TableFilter = __webpack_require__(140);
+	var _TableFilter = __webpack_require__(141);
 
 	var _TableFilter2 = _interopRequireDefault(_TableFilter);
 
-	var _TableDataStore = __webpack_require__(141);
+	var _TableDataStore = __webpack_require__(142);
 
-	var _util = __webpack_require__(142);
+	var _util = __webpack_require__(143);
 
 	var _util2 = _interopRequireDefault(_util);
 
-	var _csv_export_util = __webpack_require__(143);
+	var _csv_export_util = __webpack_require__(144);
 
 	var _csv_export_util2 = _interopRequireDefault(_csv_export_util);
 
-	var _Filter = __webpack_require__(147);
+	var _Filter = __webpack_require__(148);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1249,7 +1249,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            nextPage: options.nextPage || _Const2.default.NEXT_PAGE,
 	            firstPage: options.firstPage || _Const2.default.FIRST_PAGE,
 	            lastPage: options.lastPage || _Const2.default.LAST_PAGE,
-	            hideSizePerPage: options.hideSizePerPage })
+	            hideSizePerPage: options.hideSizePerPage,
+	            paginationPanel: options.paginationPanel })
 	        );
 	      }
 	      return null;
@@ -1577,7 +1578,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ignoreEditable: _react.PropTypes.bool,
 	    defaultSearch: _react.PropTypes.string,
 	    expandRowBgColor: _react.PropTypes.string,
-	    onCaretClick: _react.PropTypes.func
+	    onCaretClick: _react.PropTypes.func,
+	    paginationPanel: _react.PropTypes.func
 	  }),
 	  fetchInfo: _react.PropTypes.shape({
 	    dataTotalSize: _react.PropTypes.number
@@ -1682,7 +1684,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ignoreEditable: false,
 	    defaultSearch: '',
 	    expandRowBgColor: undefined,
-	    onCaretClick: undefined
+	    onCaretClick: undefined,
+	    paginationPanel: undefined
 	  },
 	  fetchInfo: {
 	    dataTotalSize: 0
@@ -8857,15 +8860,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _classnames = __webpack_require__(3);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
 	var _PageButton = __webpack_require__(138);
 
 	var _PageButton2 = _interopRequireDefault(_PageButton);
+
+	var _SizePerPageDropDown = __webpack_require__(139);
+
+	var _SizePerPageDropDown2 = _interopRequireDefault(_SizePerPageDropDown);
 
 	var _Const = __webpack_require__(4);
 
@@ -8882,26 +8895,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	var PaginationList = function (_Component) {
 	  _inherits(PaginationList, _Component);
 
-	  function PaginationList() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
+	  function PaginationList(props) {
 	    _classCallCheck(this, PaginationList);
 
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
+	    var _this = _possibleConstructorReturn(this, (PaginationList.__proto__ || Object.getPrototypeOf(PaginationList)).call(this, props));
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PaginationList.__proto__ || Object.getPrototypeOf(PaginationList)).call.apply(_ref, [this].concat(args))), _this), _this.changePage = function () {
-	      var _this2;
+	    _this.changePage = function () {
+	      return _this.__changePage__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
 
-	      return (_this2 = _this).__changePage__REACT_HOT_LOADER__.apply(_this2, arguments);
-	    }, _this.changeSizePerPage = function () {
-	      var _this3;
+	    _this.changeSizePerPage = function () {
+	      return _this.__changeSizePerPage__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
 
-	      return (_this3 = _this).__changeSizePerPage__REACT_HOT_LOADER__.apply(_this3, arguments);
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	    _this.toggleDropDown = function () {
+	      return _this.__toggleDropDown__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
+	    _this.state = {
+	      open: _this.props.open
+	    };
+	    return _this;
 	  }
 
 	  _createClass(PaginationList, [{
@@ -8935,10 +8949,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, {
 	    key: '__changeSizePerPage__REACT_HOT_LOADER__',
-	    value: function __changeSizePerPage__REACT_HOT_LOADER__(e) {
-	      e.preventDefault();
-
-	      var selectSize = parseInt(e.currentTarget.getAttribute('data-page'), 10);
+	    value: function __changeSizePerPage__REACT_HOT_LOADER__(pageNum) {
+	      var selectSize = typeof pageNum === 'string' ? parseInt(pageNum, 10) : pageNum;
 	      var currPage = this.props.currPage;
 
 	      if (selectSize !== this.props.sizePerPage) {
@@ -8950,12 +8962,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this.props.onSizePerPageList(selectSize);
 	        }
 	      }
+	      this.setState({ open: false });
+	    }
+	  }, {
+	    key: '__toggleDropDown__REACT_HOT_LOADER__',
+	    value: function __toggleDropDown__REACT_HOT_LOADER__() {
+	      this.setState({
+	        open: !this.state.open
+	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
-
 	      var _props2 = this.props,
 	          currPage = _props2.currPage,
 	          dataSize = _props2.dataSize,
@@ -8963,36 +8981,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          sizePerPageList = _props2.sizePerPageList,
 	          paginationShowsTotal = _props2.paginationShowsTotal,
 	          pageStartIndex = _props2.pageStartIndex,
-	          hideSizePerPage = _props2.hideSizePerPage;
+	          paginationPanel = _props2.paginationPanel;
 
-	      var sizePerPageText = '';
+
 	      this.totalPages = Math.ceil(dataSize / sizePerPage);
 	      this.lastPage = this.props.pageStartIndex + this.totalPages - 1;
-	      var pageBtns = this.makePage();
-	      var pageListStyle = {
-	        float: 'right',
-	        // override the margin-top defined in .pagination class in bootstrap.
-	        marginTop: '0px'
-	      };
-
-	      var sizePerPageOptions = sizePerPageList.map(function (_sizePerPage) {
-	        var pageText = _sizePerPage.text || _sizePerPage;
-	        var pageNum = _sizePerPage.value || _sizePerPage;
-	        if (sizePerPage === pageNum) sizePerPageText = pageText;
-	        return _react2.default.createElement(
-	          'li',
-	          { key: pageText, role: 'presentation' },
-	          _react2.default.createElement(
-	            'a',
-	            { role: 'menuitem',
-	              tabIndex: '-1', href: '#',
-	              'data-page': pageNum,
-	              onClick: _this4.changeSizePerPage },
-	            pageText
-	          )
-	        );
-	      });
-
+	      var pageBtns = this.makePage(typeof paginationPanel === 'function');
 	      var offset = Math.abs(_Const2.default.PAGE_START_INDEX - pageStartIndex);
 	      var start = (currPage - pageStartIndex) * sizePerPage;
 	      start = dataSize === 0 ? 0 : start + 1;
@@ -9013,78 +9007,111 @@ return /******/ (function(modules) { // webpackBootstrap
 	        total = paginationShowsTotal(start, to + 1, dataSize);
 	      }
 
-	      var dropDownStyle = {
-	        visibility: hideSizePerPage ? 'hidden' : 'visible'
-	      };
+	      var dropdown = this.makeDropDown();
+	      var content = paginationPanel && paginationPanel({
+	        currPage: currPage,
+	        sizePerPage: sizePerPage,
+	        sizePerPageList: sizePerPageList,
+	        pageStartIndex: pageStartIndex,
+	        changePage: this.changePage,
+	        toggleDropDown: this.toggleDropDown,
+	        changeSizePerPage: this.changeSizePerPage,
+	        components: {
+	          totalText: total,
+	          sizePerPageDropdown: dropdown,
+	          pageList: pageBtns
+	        }
+	      });
 
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'row', style: { marginTop: 15 } },
-	        sizePerPageList.length > 1 ? _react2.default.createElement(
+	        content || _react2.default.createElement(
 	          'div',
 	          null,
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-md-6' },
 	            total,
-	            ' ',
-	            _react2.default.createElement(
-	              'span',
-	              { className: 'dropdown', style: dropDownStyle },
-	              _react2.default.createElement(
-	                'button',
-	                { className: 'btn btn-default dropdown-toggle',
-	                  type: 'button', id: 'pageDropDown', 'data-toggle': 'dropdown',
-	                  'aria-expanded': 'true' },
-	                sizePerPageText,
-	                _react2.default.createElement(
-	                  'span',
-	                  null,
-	                  ' ',
-	                  _react2.default.createElement('span', { className: 'caret' })
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'ul',
-	                { className: 'dropdown-menu', role: 'menu', 'aria-labelledby': 'pageDropDown' },
-	                sizePerPageOptions
-	              )
-	            )
+	            sizePerPageList.length > 1 ? dropdown : ''
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-md-6' },
-	            _react2.default.createElement(
-	              'ul',
-	              { className: 'pagination', style: pageListStyle },
-	              pageBtns
-	            )
-	          )
-	        ) : _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col-md-6' },
-	            total
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col-md-6' },
-	            _react2.default.createElement(
-	              'ul',
-	              { className: 'pagination', style: pageListStyle },
-	              pageBtns
-	            )
+	            pageBtns
 	          )
 	        )
 	      );
 	    }
 	  }, {
+	    key: 'makeDropDown',
+	    value: function makeDropDown() {
+	      var _this2 = this;
+
+	      var dropdown = void 0;
+	      var dropdownProps = void 0;
+	      var sizePerPageText = '';
+	      var _props3 = this.props,
+	          sizePerPageDropDown = _props3.sizePerPageDropDown,
+	          hideSizePerPage = _props3.hideSizePerPage,
+	          sizePerPage = _props3.sizePerPage,
+	          sizePerPageList = _props3.sizePerPageList;
+
+	      if (sizePerPageDropDown) {
+	        dropdown = sizePerPageDropDown({
+	          open: this.state.open,
+	          hideSizePerPage: hideSizePerPage,
+	          currSizePerPage: sizePerPage,
+	          sizePerPageList: sizePerPageList,
+	          toggleDropDown: this.toggleDropDown,
+	          changeSizePerPage: this.changeSizePerPage
+	        });
+	        if (dropdown.type.name === _SizePerPageDropDown2.default.name) {
+	          dropdownProps = dropdown.props;
+	        } else {
+	          return dropdown;
+	        }
+	      }
+
+	      if (dropdownProps || !dropdown) {
+	        var sizePerPageOptions = sizePerPageList.map(function (_sizePerPage) {
+	          var pageText = _sizePerPage.text || _sizePerPage;
+	          var pageNum = _sizePerPage.value || _sizePerPage;
+	          if (sizePerPage === pageNum) sizePerPageText = pageText;
+	          return _react2.default.createElement(
+	            'li',
+	            { key: pageText, role: 'presentation' },
+	            _react2.default.createElement(
+	              'a',
+	              { role: 'menuitem',
+	                tabIndex: '-1', href: '#',
+	                'data-page': pageNum,
+	                onClick: function onClick(e) {
+	                  e.preventDefault();
+	                  _this2.changeSizePerPage(pageNum);
+	                } },
+	              pageText
+	            )
+	          );
+	        });
+	        dropdown = _react2.default.createElement(_SizePerPageDropDown2.default, _extends({
+	          open: this.state.open,
+	          hidden: hideSizePerPage,
+	          currSizePerPage: String(sizePerPageText),
+	          options: sizePerPageOptions,
+	          onClick: this.toggleDropDown
+	        }, dropdownProps));
+	      }
+	      return dropdown;
+	    }
+	  }, {
 	    key: 'makePage',
 	    value: function makePage() {
+	      var isCustomPagingPanel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
 	      var pages = this.getPages();
-	      return pages.map(function (page) {
+
+	      var pageBtns = pages.map(function (page) {
 	        var isActive = page === this.props.currPage;
 	        var disabled = false;
 	        var hidden = false;
@@ -9106,6 +9133,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	          page
 	        );
 	      }, this);
+
+	      var classname = (0, _classnames2.default)(isCustomPagingPanel ? null : 'react-bootstrap-table-page-btns-ul', 'pagination');
+	      var pageListStyle = isCustomPagingPanel ? null : {
+	        float: 'right',
+	        // override the margin-top defined in .pagination class in bootstrap.
+	        marginTop: '0px'
+	      };
+
+	      return _react2.default.createElement(
+	        'ul',
+	        { className: classname, style: pageListStyle },
+	        pageBtns
+	      );
 	    }
 	  }, {
 	    key: 'getPages',
@@ -9159,7 +9199,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  onSizePerPageList: _react.PropTypes.func,
 	  prePage: _react.PropTypes.string,
 	  pageStartIndex: _react.PropTypes.number,
-	  hideSizePerPage: _react.PropTypes.bool
+	  hideSizePerPage: _react.PropTypes.bool,
+	  paginationPanel: _react.PropTypes.func
 	};
 
 	PaginationList.defaultProps = {
@@ -9171,7 +9212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = _default;
 	;
 
-	var _temp2 = function () {
+	var _temp = function () {
 	  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
 	    return;
 	  }
@@ -9282,6 +9323,124 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var sizePerPageDefaultClass = 'react-bs-table-sizePerPage-dropdown';
+
+	var SizePerPageDropDown = function (_Component) {
+	  _inherits(SizePerPageDropDown, _Component);
+
+	  function SizePerPageDropDown() {
+	    _classCallCheck(this, SizePerPageDropDown);
+
+	    return _possibleConstructorReturn(this, (SizePerPageDropDown.__proto__ || Object.getPrototypeOf(SizePerPageDropDown)).apply(this, arguments));
+	  }
+
+	  _createClass(SizePerPageDropDown, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          open = _props.open,
+	          hidden = _props.hidden,
+	          onClick = _props.onClick,
+	          options = _props.options,
+	          className = _props.className,
+	          variation = _props.variation,
+	          btnContextual = _props.btnContextual,
+	          currSizePerPage = _props.currSizePerPage;
+
+
+	      var openClass = open ? 'open' : '';
+	      var dropDownStyle = { visibility: hidden ? 'hidden' : 'visible' };
+
+	      return _react2.default.createElement(
+	        'span',
+	        { style: dropDownStyle,
+	          className: variation + ' ' + openClass + ' ' + className + ' ' + sizePerPageDefaultClass },
+	        _react2.default.createElement(
+	          'button',
+	          { className: 'btn ' + btnContextual + ' dropdown-toggle',
+	            id: 'pageDropDown', 'data-toggle': 'dropdown',
+	            'aria-expanded': open,
+	            onClick: onClick },
+	          currSizePerPage,
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            ' ',
+	            _react2.default.createElement('span', { className: 'caret' })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'ul',
+	          { className: 'dropdown-menu', role: 'menu', 'aria-labelledby': 'pageDropDown' },
+	          options
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SizePerPageDropDown;
+	}(_react.Component);
+
+	SizePerPageDropDown.propTypes = {
+	  open: _react.PropTypes.bool,
+	  hidden: _react.PropTypes.bool,
+	  btnContextual: _react.PropTypes.string,
+	  currSizePerPage: _react.PropTypes.string,
+	  options: _react.PropTypes.array,
+	  variation: _react.PropTypes.oneOf(['dropdown', 'dropup']),
+	  className: _react.PropTypes.string,
+	  onClick: _react.PropTypes.func
+	};
+	SizePerPageDropDown.defaultProps = {
+	  open: false,
+	  hidden: false,
+	  btnContextual: 'btn-default',
+	  variation: 'dropdown',
+	  className: ''
+	};
+
+	var _default = SizePerPageDropDown;
+	exports.default = _default;
+	;
+
+	var _temp = function () {
+	  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+	    return;
+	  }
+
+	  __REACT_HOT_LOADER__.register(sizePerPageDefaultClass, 'sizePerPageDefaultClass', '/Users/sameer/www/test/react/react-bootstrap-table/src/pagination/SizePerPageDropDown.js');
+
+	  __REACT_HOT_LOADER__.register(SizePerPageDropDown, 'SizePerPageDropDown', '/Users/sameer/www/test/react/react-bootstrap-table/src/pagination/SizePerPageDropDown.js');
+
+	  __REACT_HOT_LOADER__.register(_default, 'default', '/Users/sameer/www/test/react/react-bootstrap-table/src/pagination/SizePerPageDropDown.js');
+	}();
+
+	;
+
+/***/ }),
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9857,7 +10016,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10009,7 +10168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10745,7 +10904,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10842,7 +11001,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10851,14 +11010,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _util = __webpack_require__(142);
+	var _util = __webpack_require__(143);
 
 	var _util2 = _interopRequireDefault(_util);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	if (_util2.default.canUseDOM()) {
-	  var filesaver = __webpack_require__(144);
+	  var filesaver = __webpack_require__(145);
 	  var saveAs = filesaver.saveAs;
 	} /* eslint block-scoped-var: 0 */
 	/* eslint vars-on-top: 0 */
@@ -10919,7 +11078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
@@ -11181,7 +11340,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	if (typeof module !== "undefined" && module.exports) {
 		module.exports.saveAs = saveAs;
-	} else if ("function" !== "undefined" && __webpack_require__(145) !== null && __webpack_require__(146) != null) {
+	} else if ("function" !== "undefined" && __webpack_require__(146) !== null && __webpack_require__(147) != null) {
 		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
 			return saveAs;
 		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -11199,14 +11358,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -11214,7 +11373,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11232,7 +11391,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Const2 = _interopRequireDefault(_Const);
 
-	var _events = __webpack_require__(148);
+	var _events = __webpack_require__(149);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11299,7 +11458,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -11606,7 +11765,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11631,31 +11790,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Const2 = _interopRequireDefault(_Const);
 
-	var _util = __webpack_require__(142);
+	var _util = __webpack_require__(143);
 
 	var _util2 = _interopRequireDefault(_util);
 
-	var _Date = __webpack_require__(150);
+	var _Date = __webpack_require__(151);
 
 	var _Date2 = _interopRequireDefault(_Date);
 
-	var _Text = __webpack_require__(151);
+	var _Text = __webpack_require__(152);
 
 	var _Text2 = _interopRequireDefault(_Text);
 
-	var _Regex = __webpack_require__(152);
+	var _Regex = __webpack_require__(153);
 
 	var _Regex2 = _interopRequireDefault(_Regex);
 
-	var _Select = __webpack_require__(153);
+	var _Select = __webpack_require__(154);
 
 	var _Select2 = _interopRequireDefault(_Select);
 
-	var _Number = __webpack_require__(154);
+	var _Number = __webpack_require__(155);
 
 	var _Number2 = _interopRequireDefault(_Number);
 
-	var _resizable = __webpack_require__(155);
+	var _resizable = __webpack_require__(156);
 
 	var _resizable2 = _interopRequireDefault(_resizable);
 
@@ -12035,7 +12194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12238,7 +12397,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12366,7 +12525,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12494,7 +12653,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12640,7 +12799,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12890,7 +13049,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports) {
 
 	'use strict';

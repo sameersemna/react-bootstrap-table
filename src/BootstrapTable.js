@@ -1348,7 +1348,7 @@ BootstrapTable.defaultProps = {
     defaultSearch: '',
     expandRowBgColor: undefined,
     onCaretClick: undefined,
-    paginationPanel: undefined,
+    paginationPanel: undefined
   },
   fetchInfo: {
     dataTotalSize: 0

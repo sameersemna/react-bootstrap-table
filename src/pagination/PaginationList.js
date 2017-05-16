@@ -89,21 +89,21 @@ class PaginationList extends Component {
       total = paginationShowsTotal(start, to + 1, dataSize);
     }
 
-    const dropdown = this.makeDropDown()
+    const dropdown = this.makeDropDown();
     const content = paginationPanel && paginationPanel({
-        currPage,
-        sizePerPage,
-        sizePerPageList,
-        pageStartIndex,
-        changePage: this.changePage,
-        toggleDropDown: this.toggleDropDown,
-        changeSizePerPage: this.changeSizePerPage,
-        components: {
-          totalText: total,
-          sizePerPageDropdown: dropdown,
-          pageList: pageBtns
-        }
-      });
+      currPage,
+      sizePerPage,
+      sizePerPageList,
+      pageStartIndex,
+      changePage: this.changePage,
+      toggleDropDown: this.toggleDropDown,
+      changeSizePerPage: this.changeSizePerPage,
+      components: {
+        totalText: total,
+        sizePerPageDropdown: dropdown,
+        pageList: pageBtns
+      }
+    });
 
     return (
       <div className='row' style={ { marginTop: 15 } }>
@@ -206,7 +206,10 @@ class PaginationList extends Component {
       );
     }, this);
 
-    const classname = classSet( isCustomPagingPanel ? null : 'react-bootstrap-table-page-btns-ul', 'pagination' );
+    const classname = classSet(
+      isCustomPagingPanel ? null : 'react-bootstrap-table-page-btns-ul',
+      'pagination'
+    );
     const pageListStyle = isCustomPagingPanel ? null : {
       float: 'right',
       // override the margin-top defined in .pagination class in bootstrap.
@@ -214,7 +217,7 @@ class PaginationList extends Component {
     };
 
     return (
-      <ul className={ classname }  style={ pageListStyle }>
+      <ul className={ classname } style={ pageListStyle }>
         { pageBtns }
       </ul>
     );
@@ -270,7 +273,7 @@ PaginationList.propTypes = {
   prePage: PropTypes.string,
   pageStartIndex: PropTypes.number,
   hideSizePerPage: PropTypes.bool,
-  paginationPanel: PropTypes.func,
+  paginationPanel: PropTypes.func
 };
 
 PaginationList.defaultProps = {

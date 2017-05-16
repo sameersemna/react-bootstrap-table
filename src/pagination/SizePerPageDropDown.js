@@ -57,5 +57,4 @@ SizePerPageDropDown.defaultProps = {
   className: ''
 };
 
-
 export default SizePerPageDropDown;
