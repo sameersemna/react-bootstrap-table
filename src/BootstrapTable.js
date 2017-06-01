@@ -218,6 +218,7 @@ class BootstrapTable extends Component {
   }
 
   componentDidMount() {
+    this._adjustHeaderWidthResizable();
     this._adjustTable();
     window.addEventListener('resize', this._adjustTable);
     this.refs.body.refs.container.addEventListener('scroll', this._scrollHeader);
@@ -274,6 +275,7 @@ class BootstrapTable extends Component {
     const isSelectAll = this.isSelectAll();
     let sortIndicator = this.props.options.sortIndicator;
     if (typeof this.props.options.sortIndicator === 'undefined') sortIndicator = true;
+
     return (
       <div className={ classSet('react-bs-table-container', this.props.containerClass) }
         style={ this.props.containerStyle }>
@@ -1052,6 +1054,30 @@ class BootstrapTable extends Component {
     }
   }
 
+  _adjustHeaderWidthResizable = () => {
+    const header = this.refs.header.refs.header;
+    const compStyles = window.getComputedStyle(header, null);
+    const headerWidth = parseInt(compStyles.width, 10);
+
+    let childrenWidth = 0;
+
+    React.Children.forEach(this.props.children, (child, key) => {
+      let childWidth = 0;
+      if (child.props.width) {
+        childWidth = child.props.width;
+      } else if (child.props.resizeOptions.minWidth) {
+        childWidth = child.props.resizeOptions.minWidth;
+      }
+      childWidth = parseInt(childWidth, 10);
+      childrenWidth += childWidth;
+      if (key === (this.props.children.length - 1)) {
+        childWidth += headerWidth - childrenWidth;
+      }
+      header.childNodes[key].style.width = `${childWidth}px`;
+      header.childNodes[key].style.minWidth = `${childWidth}px`;
+    });
+  }
+
   _adjustBodyWidth = () => {
     if (!this.props.resizable) {
       return;
@@ -1361,3 +1387,35 @@ BootstrapTable.defaultProps = {
 };
 
 export default BootstrapTable;
+
+/*
+ const newChildren = [];
+ let childrenWidth = 0;
+
+ React.Children.forEach(this.props.children, (child, key) => {
+ let childWidth = 0;
+ if (child.props.width) {
+ childWidth = child.props.width;
+ } else if (child.props.resizeOptions.minWidth) {
+ childWidth = child.props.resizeOptions.minWidth;
+ }
+ childrenWidth += parseInt(childWidth, 10);
+ let newChild = {};
+ if (key === (this.props.children.length - 1)) {
+ const newProps = {
+ ...child.props,
+ width: 306
+ };
+ newChild = {
+ ...child,
+ props: newProps
+ };
+ } else {
+ newChild = {
+ ...child
+ };
+ }
+ newChildren.push(newChild);
+ });
+ console.log(childrenWidth);
+*/
