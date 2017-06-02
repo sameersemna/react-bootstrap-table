@@ -513,6 +513,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
+	      this._adjustHeaderWidthResizable();
 	      this._adjustTable();
 	      this._attachCellEditFunc();
 	      if (this.props.options.afterTableComplete) {
@@ -2551,11 +2552,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          selectRowHeader = _react2.default.createElement('col', { style: style, key: -1 });
 	        }
 	      }
+	      var isResizable = this.props.resizable;
 	      var theader = this.props.columns.map(function (column, i) {
 	        var style = {
 	          display: column.hidden ? 'none' : null
 	        };
-	        if (!column.resize && column.width) {
+	        if (!isResizable && column.width) {
 	          var width = parseInt(column.width, 10);
 	          style.width = width;
 	          /** add min-wdth to fix user assign column width
@@ -8732,11 +8734,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          selectRowHeader = _react2.default.createElement('col', { style: style, key: -1 });
 	        }
 	      }
+	      var isResizable = this.props.resizable;
 	      var theader = this.props.columns.map(function (column, i) {
 	        var style = {
 	          display: column.hidden ? 'none' : null
 	        };
-	        if (!column.resize && column.width) {
+	        if (!isResizable && column.width) {
 	          var width = parseInt(column.width, 10);
 	          style.width = width;
 	          /** add min-wdth to fix user assign column width

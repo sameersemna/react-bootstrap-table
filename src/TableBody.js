@@ -264,11 +264,12 @@ class TableBody extends Component {
         selectRowHeader = (<col style={ style } key={ -1 }></col>);
       }
     }
+    const isResizable = this.props.resizable;
     const theader = this.props.columns.map(function(column, i) {
       const style = {
         display: column.hidden ? 'none' : null
       };
-      if (!column.resize && column.width) {
+      if (!isResizable && column.width) {
         const width = parseInt(column.width, 10);
         style.width = width;
         /** add min-wdth to fix user assign column width

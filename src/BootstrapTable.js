@@ -233,6 +233,7 @@ class BootstrapTable extends Component {
   }
 
   componentDidUpdate() {
+    this._adjustHeaderWidthResizable();
     this._adjustTable();
     this._attachCellEditFunc();
     if (this.props.options.afterTableComplete) {
