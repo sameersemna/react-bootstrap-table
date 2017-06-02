@@ -267,6 +267,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _this.___adjustHeaderWidth__REACT_HOT_LOADER__.apply(_this, arguments);
 	    };
 
+	    _this._adjustHeaderWidthResizable = function () {
+	      return _this.___adjustHeaderWidthResizable__REACT_HOT_LOADER__.apply(_this, arguments);
+	    };
+
 	    _this._adjustBodyWidth = function () {
 	      return _this.___adjustBodyWidth__REACT_HOT_LOADER__.apply(_this, arguments);
 	    };
@@ -492,6 +496,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      this._adjustHeaderWidthResizable();
 	      this._adjustTable();
 	      window.addEventListener('resize', this._adjustTable);
 	      this.refs.body.refs.container.addEventListener('scroll', this._scrollHeader);
@@ -556,6 +561,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var isSelectAll = this.isSelectAll();
 	      var sortIndicator = this.props.options.sortIndicator;
 	      if (typeof this.props.options.sortIndicator === 'undefined') sortIndicator = true;
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: (0, _classnames2.default)('react-bs-table-container', this.props.containerClass),
@@ -1395,6 +1401,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
+	    key: '___adjustHeaderWidthResizable__REACT_HOT_LOADER__',
+	    value: function ___adjustHeaderWidthResizable__REACT_HOT_LOADER__() {
+	      var _this4 = this;
+
+	      var header = this.refs.header.refs.header;
+	      var compStyles = window.getComputedStyle(header, null);
+	      var headerWidth = parseInt(compStyles.width, 10);
+
+	      var childrenWidth = 0;
+
+	      _react2.default.Children.forEach(this.props.children, function (child, key) {
+	        var childWidth = 0;
+	        if (child.props.width) {
+	          childWidth = child.props.width;
+	        } else if (child.props.resizeOptions.minWidth) {
+	          childWidth = child.props.resizeOptions.minWidth;
+	        }
+	        childWidth = parseInt(childWidth, 10);
+	        childrenWidth += childWidth;
+	        if (key === _this4.props.children.length - 1) {
+	          childWidth += headerWidth - childrenWidth;
+	        }
+	        header.childNodes[key].style.width = childWidth + 'px';
+	        header.childNodes[key].style.minWidth = childWidth + 'px';
+	      });
+	    }
+	  }, {
 	    key: '___adjustBodyWidth__REACT_HOT_LOADER__',
 	    value: function ___adjustBodyWidth__REACT_HOT_LOADER__() {
 	      if (!this.props.resizable) {
@@ -1699,6 +1732,39 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _default = BootstrapTable;
 	exports.default = _default;
+
+	/*
+	 const newChildren = [];
+	 let childrenWidth = 0;
+
+	 React.Children.forEach(this.props.children, (child, key) => {
+	 let childWidth = 0;
+	 if (child.props.width) {
+	 childWidth = child.props.width;
+	 } else if (child.props.resizeOptions.minWidth) {
+	 childWidth = child.props.resizeOptions.minWidth;
+	 }
+	 childrenWidth += parseInt(childWidth, 10);
+	 let newChild = {};
+	 if (key === (this.props.children.length - 1)) {
+	 const newProps = {
+	 ...child.props,
+	 width: 306
+	 };
+	 newChild = {
+	 ...child,
+	 props: newProps
+	 };
+	 } else {
+	 newChild = {
+	 ...child
+	 };
+	 }
+	 newChildren.push(newChild);
+	 });
+	 console.log(childrenWidth);
+	*/
+
 	;
 
 	var _temp = function () {
