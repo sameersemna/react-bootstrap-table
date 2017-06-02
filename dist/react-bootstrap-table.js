@@ -1405,6 +1405,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function ___adjustHeaderWidthResizable__REACT_HOT_LOADER__() {
 	      var _this4 = this;
 
+	      if (!this.props.resizable) {
+	        return;
+	      }
 	      var header = this.refs.header.refs.header;
 	      var compStyles = window.getComputedStyle(header, null);
 	      var headerWidth = parseInt(compStyles.width, 10);

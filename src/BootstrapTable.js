@@ -1055,6 +1055,9 @@ class BootstrapTable extends Component {
   }
 
   _adjustHeaderWidthResizable = () => {
+    if (!this.props.resizable) {
+      return;
+    }
     const header = this.refs.header.refs.header;
     const compStyles = window.getComputedStyle(header, null);
     const headerWidth = parseInt(compStyles.width, 10);

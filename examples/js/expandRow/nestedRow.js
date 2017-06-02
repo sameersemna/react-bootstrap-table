@@ -69,7 +69,7 @@ export default class NestedRow extends React.Component {
   }
 
   caretClick(row, callback) {
-    console.log(row._data_nesting.childrenShown);
+    // console.log(row._data_nesting.childrenShown);
     if (row._data_children.length === 0) {
       row._data_nesting.loading = true;
       this.setRowById(this.state.data, row.id, this.caretClickCallback(callback));
@@ -78,7 +78,7 @@ export default class NestedRow extends React.Component {
 
   caretClickCallback(callback) {
     return function(row) {
-      console.log(row._data_nesting.childrenShown);
+      // console.log(row._data_nesting.childrenShown);
       callback(row);
     };
   }
