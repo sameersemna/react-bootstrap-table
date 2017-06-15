@@ -411,3 +411,22 @@ tr[data-nesting-has-children="false"] td > .caret-right {
     transform: rotate(360deg);
   }
 }
+
+.rhombus_container{
+  position: relative;
+}
+.rhombus {
+  position: absolute;
+  background: #CCC;
+  width: 8px;
+  height: 8px;
+  margin: 7px 5px;
+  transform: rotate(45deg);
+}
+.rhombus > span{
+  background: #fff;
+  padding: 4px 1px;
+  position: absolute;
+  left: 3px;
+  transform: rotate(45deg);
+}
