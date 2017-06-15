@@ -11005,16 +11005,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (sortIndicator) {
 	      defaultCaret = !dataSort ? null : _react2.default.createElement(
 	        'span',
-	        { className: 'order' },
+	        { className: 'order rhombus_container' },
 	        _react2.default.createElement(
 	          'span',
-	          { className: 'dropdown' },
-	          _react2.default.createElement('span', { className: 'caret', style: { margin: '10px 0 10px 5px', color: '#ccc' } })
-	        ),
-	        _react2.default.createElement(
-	          'span',
-	          { className: 'dropup' },
-	          _react2.default.createElement('span', { className: 'caret', style: { margin: '10px 0', color: '#ccc' } })
+	          { className: 'rhombus', style: { backgroundColor: '#ccc' } },
+	          _react2.default.createElement('span', null)
 	        )
 	      );
 	    }
