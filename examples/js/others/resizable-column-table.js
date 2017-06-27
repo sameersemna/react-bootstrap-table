@@ -79,7 +79,9 @@ export default class ResizableColumnTable extends React.Component {
 
     return (
       <BootstrapTable ref='restable' data={ products } options={ options }
-        footerData={ footerData } height='800px' resizable={ true } multiSort={ true }
+        footerData={ footerData } height='800px'
+        resizable={ true } fillColumn={ 4 }
+        multiSort={ true }
         sortCols={ sortCols } multiSortKey='shiftKey'>
         <TableHeaderColumn dataField='id' isKey={ true } dataSort resize
           resizeOptions={ { minWidth: 100, maxWidth: false } }>Product ID</TableHeaderColumn>
@@ -89,12 +91,12 @@ export default class ResizableColumnTable extends React.Component {
           resizeOptions={ { minWidth: 200, maxWidth: false } }>Product Name</TableHeaderColumn>
         <TableHeaderColumn dataField='price' dataSort resize
           resizeOptions={ { minWidth: 200, maxWidth: false } }>Product Price</TableHeaderColumn>
-        <TableHeaderColumn dataField='rate' dataSort resize width='300px'
-          resizeOptions={ { minWidth: 200, maxWidth: false } }>Rate</TableHeaderColumn>
+        <TableHeaderColumn dataField='rate' dataSort resize width='150px'
+          resizeOptions={ { minWidth: 100, maxWidth: 200 } }>Rate</TableHeaderColumn>
         <TableHeaderColumn dataField='quantity' dataSort resize
-          resizeOptions={ { minWidth: 200, maxWidth: false } }>Quantity</TableHeaderColumn>
+          resizeOptions={ { minWidth: 100, maxWidth: false } }>Quantity</TableHeaderColumn>
         <TableHeaderColumn dataField='stock' dataSort
-          resizeOptions={ { minWidth: 200, maxWidth: false } }>Stock</TableHeaderColumn>
+          resizeOptions={ { minWidth: 100, maxWidth: false } }>Stock</TableHeaderColumn>
       </BootstrapTable>
     );
   }

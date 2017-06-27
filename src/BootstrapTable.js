@@ -1065,6 +1065,18 @@ class BootstrapTable extends Component {
 
     let childrenWidth = 0;
 
+    React.Children.forEach(this.props.children, (child) => {
+      let childWidth = 0;
+      if (child.props.width) {
+        childWidth = child.props.width;
+      } else if (child.props.resizeOptions.minWidth) {
+        childWidth = child.props.resizeOptions.minWidth;
+      }
+      childWidth = parseInt(childWidth, 10);
+
+      childrenWidth += childWidth;
+    });
+
     React.Children.forEach(this.props.children, (child, key) => {
       let childWidth = 0;
       if (child.props.width) {
@@ -1073,8 +1085,10 @@ class BootstrapTable extends Component {
         childWidth = child.props.resizeOptions.minWidth;
       }
       childWidth = parseInt(childWidth, 10);
-      childrenWidth += childWidth;
-      if (key === (this.props.children.length - 1)) {
+
+      const fillCol = (typeof(this.props.fillColumn) !== 'undefined') && (this.props.fillColumn <= this.props.children.length - 1) ? this.props.fillColumn : this.props.children.length - 1;
+
+      if (key === fillCol) {
         childWidth += headerWidth - childrenWidth;
       }
       header.childNodes[key].style.width = `${childWidth}px`;
@@ -1182,6 +1196,7 @@ BootstrapTable.propTypes = {
   pagination: PropTypes.bool,
   printable: PropTypes.bool,
   resizable: PropTypes.bool,
+  fillColumn: PropTypes.number,
   multiSort: PropTypes.bool,
   sortCols: PropTypes.array,
   searchPlaceholder: PropTypes.string,
@@ -1297,6 +1312,7 @@ BootstrapTable.defaultProps = {
   pagination: false,
   printable: false,
   resizable: false,
+  fillColumn: undefined,
   multiSort: false,
   sortCols: [],
   searchPlaceholder: undefined,
