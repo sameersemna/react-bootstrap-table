@@ -1415,6 +1415,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var childrenWidth = 0;
 
+	      _react2.default.Children.forEach(this.props.children, function (child) {
+	        var childWidth = 0;
+	        if (child.props.width) {
+	          childWidth = child.props.width;
+	        } else if (child.props.resizeOptions.minWidth) {
+	          childWidth = child.props.resizeOptions.minWidth;
+	        }
+	        childWidth = parseInt(childWidth, 10);
+
+	        childrenWidth += childWidth;
+	      });
+
 	      _react2.default.Children.forEach(this.props.children, function (child, key) {
 	        var childWidth = 0;
 	        if (child.props.width) {
@@ -1423,8 +1435,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          childWidth = child.props.resizeOptions.minWidth;
 	        }
 	        childWidth = parseInt(childWidth, 10);
-	        childrenWidth += childWidth;
-	        if (key === _this4.props.children.length - 1) {
+
+	        var fillCol = typeof _this4.props.fillColumn !== 'undefined' && _this4.props.fillColumn <= _this4.props.children.length - 1 ? _this4.props.fillColumn : _this4.props.children.length - 1;
+
+	        if (key === fillCol) {
 	          childWidth += headerWidth - childrenWidth;
 	        }
 	        header.childNodes[key].style.width = childWidth + 'px';
@@ -1530,6 +1544,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  pagination: _react.PropTypes.bool,
 	  printable: _react.PropTypes.bool,
 	  resizable: _react.PropTypes.bool,
+	  fillColumn: _react.PropTypes.number,
 	  multiSort: _react.PropTypes.bool,
 	  sortCols: _react.PropTypes.array,
 	  searchPlaceholder: _react.PropTypes.string,
@@ -1641,6 +1656,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  pagination: false,
 	  printable: false,
 	  resizable: false,
+	  fillColumn: undefined,
 	  multiSort: false,
 	  sortCols: [],
 	  searchPlaceholder: undefined,
