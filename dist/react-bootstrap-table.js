@@ -1439,7 +1439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var fillCol = typeof _this4.props.fillColumn !== 'undefined' && _this4.props.fillColumn <= _this4.props.children.length - 1 ? _this4.props.fillColumn : _this4.props.children.length - 1;
 
 	        if (key === fillCol) {
-	          childWidth += headerWidth - childrenWidth;
+	          childWidth += headerWidth - childrenWidth + _this4.props.fillColumnAdjust; // SHS subtract 10 more pixels to arrange with wider scrollbar
 	        }
 	        header.childNodes[key].style.width = childWidth + 'px';
 	        header.childNodes[key].style.minWidth = childWidth + 'px';
@@ -1545,6 +1545,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  printable: _react.PropTypes.bool,
 	  resizable: _react.PropTypes.bool,
 	  fillColumn: _react.PropTypes.number,
+	  fillColumnAdjust: _react.PropTypes.number,
 	  multiSort: _react.PropTypes.bool,
 	  sortCols: _react.PropTypes.array,
 	  searchPlaceholder: _react.PropTypes.string,
@@ -1657,6 +1658,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  printable: false,
 	  resizable: false,
 	  fillColumn: undefined,
+	  fillColumnAdjust: 0,
 	  multiSort: false,
 	  sortCols: [],
 	  searchPlaceholder: undefined,
