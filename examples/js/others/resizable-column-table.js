@@ -80,7 +80,7 @@ export default class ResizableColumnTable extends React.Component {
     return (
       <BootstrapTable ref='restable' data={ products } options={ options }
         footerData={ footerData } height='800px'
-        resizable={ true } fillColumn={ 4 }
+        resizable={ true } fillColumn={ 5 } fillColumnAdjust={ -10 }
         multiSort={ true }
         sortCols={ sortCols } multiSortKey='shiftKey'>
         <TableHeaderColumn dataField='id' isKey={ true } dataSort resize

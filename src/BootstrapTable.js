@@ -1089,7 +1089,7 @@ class BootstrapTable extends Component {
       const fillCol = (typeof(this.props.fillColumn) !== 'undefined') && (this.props.fillColumn <= this.props.children.length - 1) ? this.props.fillColumn : this.props.children.length - 1;
 
       if (key === fillCol) {
-        childWidth += headerWidth - childrenWidth;
+        childWidth += headerWidth - childrenWidth + this.props.fillColumnAdjust; // SHS subtract 10 more pixels to arrange with wider scrollbar
       }
       header.childNodes[key].style.width = `${childWidth}px`;
       header.childNodes[key].style.minWidth = `${childWidth}px`;
@@ -1197,6 +1197,7 @@ BootstrapTable.propTypes = {
   printable: PropTypes.bool,
   resizable: PropTypes.bool,
   fillColumn: PropTypes.number,
+  fillColumnAdjust: PropTypes.number,
   multiSort: PropTypes.bool,
   sortCols: PropTypes.array,
   searchPlaceholder: PropTypes.string,
@@ -1313,6 +1314,7 @@ BootstrapTable.defaultProps = {
   printable: false,
   resizable: false,
   fillColumn: undefined,
+  fillColumnAdjust: 0,
   multiSort: false,
   sortCols: [],
   searchPlaceholder: undefined,
