@@ -193,7 +193,7 @@ class BootstrapTable extends Component {
       const sortInfo = this.store.getSortInfo();
       const sortField = options.sortName || (sortInfo ? sortInfo.sortField : undefined);
       const sortOrder = options.sortOrder || (sortInfo ? sortInfo.order : undefined);
-      let sortCols = [];
+      let sortCols = nextProps.sortCols ? nextProps.sortCols : [];
       if (sortField && sortOrder) {
         sortCols = this.getSortCols(sortOrder, sortField, this.state.multiSortEnabled);
         this.store.sort(sortOrder, sortField, sortCols);

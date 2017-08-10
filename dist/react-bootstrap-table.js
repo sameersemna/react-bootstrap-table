@@ -470,7 +470,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var sortInfo = this.store.getSortInfo();
 	        var sortField = options.sortName || (sortInfo ? sortInfo.sortField : undefined);
 	        var sortOrder = options.sortOrder || (sortInfo ? sortInfo.order : undefined);
-	        var sortCols = [];
+	        var sortCols = nextProps.sortCols ? nextProps.sortCols : [];
 	        if (sortField && sortOrder) {
 	          sortCols = this.getSortCols(sortOrder, sortField, this.state.multiSortEnabled);
 	          this.store.sort(sortOrder, sortField, sortCols);
