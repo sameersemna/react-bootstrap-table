@@ -1013,6 +1013,7 @@ class BootstrapTable extends Component {
   }
 
   _scrollTable = (e) => {
+    console.dir(this.refs);
     $('thead th:nth-child(1)').css('left', e.currentTarget.scrollLeft);
     $('tbody td:nth-child(1)').css('left', e.currentTarget.scrollLeft);
   }
