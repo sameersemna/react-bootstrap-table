@@ -25,7 +25,14 @@ export default class ColumnFixedTable extends React.Component {
       <BootstrapTable data={ products }>
           <TableHeaderColumn dataField='id' isKey={ true } width='140px' fixed>Product ID</TableHeaderColumn>
           <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
-          <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
+          <TableHeaderColumn dataField='price' width='140px'>Product Price</TableHeaderColumn>
+          <TableHeaderColumn dataField='price' width='140px'>Product Price</TableHeaderColumn>
+          <TableHeaderColumn dataField='price' width='140px'>Product Price</TableHeaderColumn>
+          <TableHeaderColumn dataField='price' width='140px'>Product Price</TableHeaderColumn>
+          <TableHeaderColumn dataField='price' width='140px'>Product Price</TableHeaderColumn>
+          <TableHeaderColumn dataField='price' width='140px'>Product Price</TableHeaderColumn>
+          <TableHeaderColumn dataField='price' width='140px'>Product Price</TableHeaderColumn>
+          <TableHeaderColumn dataField='price' width='140px'>Product Price</TableHeaderColumn>
       </BootstrapTable>
     );
   }

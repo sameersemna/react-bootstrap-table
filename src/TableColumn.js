@@ -81,8 +81,6 @@ class TableColumn extends Component {
       display: hidden ? 'none' : null
     };
 
-    const className = fixed ? this.props.className + ' fixed' : this.props.className;
-
     const opts = {};
 
     if (cellEdit) {
@@ -95,7 +93,7 @@ class TableColumn extends Component {
     return (
       <td style={ tdStyle }
           title={ columnTitle }
-          className={ className }
+          className={ fixed && 'fixed' }
           colSpan={ colSpan }
           { ...opts }>
         { this.props.nestedRowsOptions

@@ -73,6 +73,7 @@
 .react-bs-table .table > tbody > tr > td.fixed,
 .react-bs-table .table > tfoot > tr > th.fixed{
   position: relative;
+  z-index: 1000;
   background-color: #FFF;
 }
 

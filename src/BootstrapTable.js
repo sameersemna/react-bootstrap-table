@@ -227,15 +227,6 @@ class BootstrapTable extends Component {
     this.refs.table.addEventListener('scroll', this._scrollTable);
   }
 
-  /*
-  tableDidMount(node) {
-    if (node) {
-      node.addEventListener('scroll', _scrollTable);
-    }
-    return 'table';
-  }
-  */
-
   componentWillUnmount() {
     window.removeEventListener('resize', this._adjustTable);
     this.refs.body.refs.container.removeEventListener('scroll', this._scrollHeader);
@@ -295,7 +286,6 @@ class BootstrapTable extends Component {
         style={ this.props.containerStyle }>
         { toolBar }
         <div ref='table'
-             onScroll={ this._scrollTable.bind(this) }
             className={ classSet('react-bs-table', this.props.tableContainerClass) }
             style={ { ...style, ...this.props.tableStyle } }
             onMouseEnter={ this.handleMouseEnter }
@@ -1013,9 +1003,17 @@ class BootstrapTable extends Component {
   }
 
   _scrollTable = (e) => {
-    console.dir(this.refs);
-    $('thead th:nth-child(1)').css('left', e.currentTarget.scrollLeft);
-    $('tbody td:nth-child(1)').css('left', e.currentTarget.scrollLeft);
+    /*
+    const children = this.refs.header.props.children;
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].props && children[i].props.fixed) {
+        this.refs.header.refs.header.children[i].style.setProperty('left', e.currentTarget.scrollLeft + 'px');
+      }
+    }
+    */
+    $('thead th.fixed').css('left', e.currentTarget.scrollLeft);
+    $('tbody td.fixed').css('left', e.currentTarget.scrollLeft);
+    $('tfoot td.fixed').css('left', e.currentTarget.scrollLeft);
   }
 
   _scrollHeader = (e) => {
