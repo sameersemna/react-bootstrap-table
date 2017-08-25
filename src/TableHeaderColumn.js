@@ -111,6 +111,7 @@ class TableHeaderColumn extends Component {
       dataField,
       headerAlign,
       headerTitle,
+      fixed,
       hidden,
       sort,
       dataSort,
@@ -124,8 +125,9 @@ class TableHeaderColumn extends Component {
     const thStyle = {
       textAlign: headerAlign || dataAlign,
       display: hidden ? 'none' : null,
-      position: resize ? 'relative' : 'initial'
+      position: resize || fixed ? 'relative' : 'initial'
     };
+
     if (this.props.width) {
       thStyle.width = this.props.width;
     } else if (this.props.resizeOptions.minWidth) {
@@ -151,9 +153,11 @@ class TableHeaderColumn extends Component {
     const classes = classSet(
       typeof className === 'function' ? className() : className,
       dataSort ? 'sort-column' : '',
+      fixed ? 'fixed' : '',
       resize ? 'resizable' : '');
 
     const title = headerTitle && typeof children === 'string' ? { title: children } : null;
+
     return (
       <th ref='header-col'
           className={ classes }
@@ -250,6 +254,7 @@ TableHeaderColumn.propTypes = {
   csvHeader: PropTypes.string,
   isKey: PropTypes.bool,
   editable: PropTypes.any,
+  fixed: PropTypes.bool,
   hidden: PropTypes.bool,
   hiddenOnInsert: PropTypes.bool,
   searchable: PropTypes.bool,
@@ -305,6 +310,7 @@ TableHeaderColumn.defaultProps = {
   onResizing: undefined,
   onStartResizing: undefined,
   onStopResizing: undefined,
+  fixed: false,
   hidden: false,
   hiddenOnInsert: false,
   searchable: true,

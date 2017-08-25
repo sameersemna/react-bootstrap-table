@@ -12,6 +12,7 @@ import Column from './column/demo';
 import Sort from './sort/demo';
 import ColumnFormat from './column-format/demo';
 import ColumnFilter from './column-filter/demo';
+import ColumnFixed from './column-fixed/demo';
 import Selection from './selection/demo';
 import Pagination from './pagination/demo';
 import Manipulation from './manipulation/demo';
@@ -37,6 +38,7 @@ const renderApp = () => {
             <Route path='sort' component={ Sort } />
             <Route path='column-format' component={ ColumnFormat } />
             <Route path='column-filter' component={ ColumnFilter } />
+            <Route path='column-fixed' component={ ColumnFixed } />
             <Route path='selection' component={ Selection } />
             <Route path='pagination' component={ Pagination } />
             <Route path='manipulation' component={ Manipulation } />

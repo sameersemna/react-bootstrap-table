@@ -13,6 +13,7 @@ import { TableDataStore } from './store/TableDataStore';
 import Util from './util';
 import exportCSV from './csv_export_util';
 import { Filter } from './Filter';
+const $ = require('jquery');
 
 class BootstrapTable extends Component {
 
@@ -145,6 +146,7 @@ class BootstrapTable extends Component {
         filterValue: column.props.filterValue,
         editable: column.props.editable,
         customEditor: column.props.customEditor,
+        fixed: column.props.fixed,
         hidden: column.props.hidden,
         hiddenOnInsert: column.props.hiddenOnInsert,
         searchable: column.props.searchable,
@@ -222,11 +224,22 @@ class BootstrapTable extends Component {
     this._adjustTable();
     window.addEventListener('resize', this._adjustTable);
     this.refs.body.refs.container.addEventListener('scroll', this._scrollHeader);
+    this.refs.table.addEventListener('scroll', this._scrollTable);
   }
+
+  /*
+  tableDidMount(node) {
+    if (node) {
+      node.addEventListener('scroll', _scrollTable);
+    }
+    return 'table';
+  }
+  */
 
   componentWillUnmount() {
     window.removeEventListener('resize', this._adjustTable);
     this.refs.body.refs.container.removeEventListener('scroll', this._scrollHeader);
+    this.refs.table.removeEventListener('scroll', this._scrollTable);
     if (this.filter) {
       this.filter.removeAllListeners('onFilterChange');
     }
@@ -282,6 +295,7 @@ class BootstrapTable extends Component {
         style={ this.props.containerStyle }>
         { toolBar }
         <div ref='table'
+             onScroll={ this._scrollTable.bind(this) }
             className={ classSet('react-bs-table', this.props.tableContainerClass) }
             style={ { ...style, ...this.props.tableStyle } }
             onMouseEnter={ this.handleMouseEnter }
@@ -996,6 +1010,11 @@ class BootstrapTable extends Component {
     } else {
       return null;
     }
+  }
+
+  _scrollTable = (e) => {
+    $('thead th:nth-child(1)').css('left', e.currentTarget.scrollLeft);
+    $('tbody td:nth-child(1)').css('left', e.currentTarget.scrollLeft);
   }
 
   _scrollHeader = (e) => {

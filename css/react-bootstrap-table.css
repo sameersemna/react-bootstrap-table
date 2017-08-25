@@ -1,6 +1,10 @@
 /*editor error animate*/
 /*@import "~toastr/build/toastr.min.css";*/
 
+.react-bs-table-container {
+  position: relative;
+}
+
 .react-bs-table-container .react-bs-table-search-form {
   margin-bottom: 0;
 }
@@ -15,6 +19,7 @@
 .react-bs-table table {
   margin-bottom: 0;
   table-layout: fixed;
+  border-collapse: separate;
 }
 
 .react-bs-table table td,
@@ -62,6 +67,13 @@
 
 .react-bs-table .table-bordered {
     border: 0;
+}
+
+.react-bs-table .table > thead > tr > th.fixed,
+.react-bs-table .table > tbody > tr > td.fixed,
+.react-bs-table .table > tfoot > tr > th.fixed{
+  position: relative;
+  background-color: #FFF;
 }
 
 .react-bs-table .table-bordered > thead > tr > th,
