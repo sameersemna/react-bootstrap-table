@@ -74,7 +74,7 @@
 .react-bs-table .table > tfoot > tr > th.fixed{
   position: relative;
   z-index: 1000;
-  background-color: #FFF;
+  background-color: inherit;
 }
 
 .react-bs-table .table-bordered > thead > tr > th,
