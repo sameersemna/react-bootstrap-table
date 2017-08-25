@@ -509,16 +509,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.refs.body.refs.container.addEventListener('scroll', this._scrollHeader);
 	      this.refs.table.addEventListener('scroll', this._scrollTable);
 	    }
-
-	    /*
-	    tableDidMount(node) {
-	      if (node) {
-	        node.addEventListener('scroll', _scrollTable);
-	      }
-	      return 'table';
-	    }
-	    */
-
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
@@ -590,7 +580,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _react2.default.createElement(
 	          'div',
 	          { ref: 'table',
-	            onScroll: this._scrollTable.bind(this),
 	            className: (0, _classnames2.default)('react-bs-table', this.props.tableContainerClass),
 	            style: _extends({}, style, this.props.tableStyle),
 	            onMouseEnter: this.handleMouseEnter,
@@ -1364,9 +1353,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '___scrollTable__REACT_HOT_LOADER__',
 	    value: function ___scrollTable__REACT_HOT_LOADER__(e) {
-	      console.dir(this.refs);
-	      $('thead th:nth-child(1)').css('left', e.currentTarget.scrollLeft);
-	      $('tbody td:nth-child(1)').css('left', e.currentTarget.scrollLeft);
+	      /*
+	      const children = this.refs.header.props.children;
+	      for (let i = 0; i < children.length; i++) {
+	        if (children[i].props && children[i].props.fixed) {
+	          this.refs.header.refs.header.children[i].style.setProperty('left', e.currentTarget.scrollLeft + 'px');
+	        }
+	      }
+	      */
+	      $('thead th.fixed').css('left', e.currentTarget.scrollLeft);
+	      $('tbody td.fixed').css('left', e.currentTarget.scrollLeft);
+	      $('tfoot td.fixed').css('left', e.currentTarget.scrollLeft);
 	    }
 	  }, {
 	    key: '___scrollHeader__REACT_HOT_LOADER__',
@@ -3227,8 +3224,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        display: hidden ? 'none' : null
 	      };
 
-	      var className = fixed ? this.props.className + ' fixed' : this.props.className;
-
 	      var opts = {};
 
 	      if (cellEdit) {
@@ -3242,7 +3237,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'td',
 	        _extends({ style: tdStyle,
 	          title: columnTitle,
-	          className: className,
+	          className: fixed && 'fixed',
 	          colSpan: colSpan
 	        }, opts),
 	        this.props.nestedRowsOptions && this.props.nestedRowsOptions.showCaret && this.props.colNo === 0 && _react2.default.createElement('span', { className: 'caret-right', onClick: this.caretClick }),
