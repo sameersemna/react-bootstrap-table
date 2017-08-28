@@ -38,13 +38,14 @@ class TableFilter extends Component {
     }
 
     const filterField = columns.map(function(column) {
-      const { hidden, width, name } = column;
+      const { fixed, hidden, width, name } = column;
       const thStyle = {
         display: hidden ? 'none' : null,
         width
       };
+      const className = fixed ? 'fixed' : null;
       return (
-        <th key={ name } style={ thStyle }>
+        <th key={ name } className={ className } style={ thStyle }>
           <div className='th-inner table-header-column'>
             <input size='10' type='text'
               placeholder={ name } name={ name } onKeyUp={ this.handleKeyUp }/>

@@ -12,6 +12,7 @@ class TableColumn extends Component {
     let shouldUpdated = this.props.width !== nextProps.width
       || this.props.className !== nextProps.className
       || this.props.hidden !== nextProps.hidden
+      || this.props.fixed !== nextProps.fixed
       || this.props.dataAlign !== nextProps.dataAlign
       || typeof children !== typeof nextProps.children
       || ('' + this.props.onEdit).toString() !== ('' + nextProps.onEdit).toString();
@@ -68,9 +69,9 @@ class TableColumn extends Component {
     const {
       children,
       columnTitle,
-      className,
       colSpan,
       dataAlign,
+      fixed,
       hidden,
       cellEdit
     } = this.props;
@@ -92,7 +93,7 @@ class TableColumn extends Component {
     return (
       <td style={ tdStyle }
           title={ columnTitle }
-          className={ className }
+          className={ fixed && 'fixed' }
           colSpan={ colSpan }
           { ...opts }>
         { this.props.nestedRowsOptions
@@ -114,6 +115,7 @@ TableColumn.propTypes = {
   nestedRowsOptions: PropTypes.object,
   rIndex: PropTypes.number,
   dataAlign: PropTypes.string,
+  fixed: PropTypes.bool,
   hidden: PropTypes.bool,
   className: PropTypes.string,
   columnTitle: PropTypes.string,
@@ -123,6 +125,7 @@ TableColumn.propTypes = {
 
 TableColumn.defaultProps = {
   dataAlign: 'left',
+  fixed: false,
   hidden: false,
   className: ''
 };

@@ -38,6 +38,9 @@ class App extends React.Component {
       text: 'Column Filter',
       href: 'column-filter'
     }, {
+      text: 'Column Fixed',
+      href: 'column-fixed'
+    }, {
       text: 'Row Selection',
       href: 'selection'
     }, {

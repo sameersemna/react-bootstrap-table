@@ -68,6 +68,7 @@ const mapColumns = function(column, i, data, r, object) {
                      columnTitle={ columnTitle }
                      colSpan={ colSpan }
                      cellEdit={ object.props.cellEdit }
+                     fixed={ column.fixed }
                      hidden={ column.hidden }
                      onEdit={ object.handleEditCell }
                      width={ column.width }>
@@ -196,6 +197,7 @@ class TableFooter extends Component {
         style.minWidth = width;
       }
       column.className = column.resize ? column.className + ' resizable' : column.className;
+      column.className = column.fixed ? column.className + ' fixed' : column.className;
       return (<col style={ style } key={ i } className={ column.className }></col>);
     });
 
