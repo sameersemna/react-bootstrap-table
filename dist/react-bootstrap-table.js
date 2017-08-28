@@ -1353,14 +1353,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '___scrollTable__REACT_HOT_LOADER__',
 	    value: function ___scrollTable__REACT_HOT_LOADER__(e) {
-	      /*
-	      const children = this.refs.header.props.children;
-	      for (let i = 0; i < children.length; i++) {
-	        if (children[i].props && children[i].props.fixed) {
-	          this.refs.header.refs.header.children[i].style.setProperty('left', e.currentTarget.scrollLeft + 'px');
-	        }
-	      }
-	      */
+	      // TODO: Not really smart to do it with jquery
 	      $('thead th.fixed').css('left', e.currentTarget.scrollLeft);
 	      $('tbody td.fixed').css('left', e.currentTarget.scrollLeft);
 	      $('tfoot td.fixed').css('left', e.currentTarget.scrollLeft);
