@@ -581,6 +581,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          'div',
 	          { ref: 'table',
 	            className: (0, _classnames2.default)('react-bs-table', this.props.tableContainerClass),
+	            id: this.props.tableContainerId,
 	            style: _extends({}, style, this.props.tableStyle),
 	            onMouseEnter: this.handleMouseEnter,
 	            onMouseLeave: this.handleMouseLeave },
@@ -1353,17 +1354,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '___scrollTable__REACT_HOT_LOADER__',
 	    value: function ___scrollTable__REACT_HOT_LOADER__(e) {
-	      /*
-	      const children = this.refs.header.props.children;
-	      for (let i = 0; i < children.length; i++) {
-	        if (children[i].props && children[i].props.fixed) {
-	          this.refs.header.refs.header.children[i].style.setProperty('left', e.currentTarget.scrollLeft + 'px');
-	        }
-	      }
-	      */
-	      $('thead th.fixed').css('left', e.currentTarget.scrollLeft);
-	      $('tbody td.fixed').css('left', e.currentTarget.scrollLeft);
-	      $('tfoot td.fixed').css('left', e.currentTarget.scrollLeft);
+	      var table = $('#' + this.props.tableContainerId);
+	      table.find('thead th.fixed').css('left', e.currentTarget.scrollLeft);
+	      table.find('tbody td.fixed').css('left', e.currentTarget.scrollLeft);
+	      table.find('tfoot td.fixed').css('left', e.currentTarget.scrollLeft);
 	    }
 	  }, {
 	    key: '___scrollHeader__REACT_HOT_LOADER__',
@@ -1604,6 +1598,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  bodyStyle: _react.PropTypes.object,
 	  containerClass: _react.PropTypes.string,
 	  tableContainerClass: _react.PropTypes.string,
+	  tableContainerId: _react.PropTypes.string,
 	  headerContainerClass: _react.PropTypes.string,
 	  bodyContainerClass: _react.PropTypes.string,
 	  tableHeaderClass: _react.PropTypes.string,
@@ -1718,6 +1713,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  bodyStyle: undefined,
 	  containerClass: null,
 	  tableContainerClass: null,
+	  tableContainerId: Math.random().toString(16).slice(2),
 	  headerContainerClass: null,
 	  bodyContainerClass: null,
 	  tableHeaderClass: null,
