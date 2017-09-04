@@ -287,6 +287,7 @@ class BootstrapTable extends Component {
         { toolBar }
         <div ref='table'
             className={ classSet('react-bs-table', this.props.tableContainerClass) }
+            id={ this.props.tableContainerId }
             style={ { ...style, ...this.props.tableStyle } }
             onMouseEnter={ this.handleMouseEnter }
             onMouseLeave={ this.handleMouseLeave }>
@@ -1003,10 +1004,10 @@ class BootstrapTable extends Component {
   }
 
   _scrollTable = (e) => {
-    // TODO: Not really smart to do it with jquery
-    $('thead th.fixed').css('left', e.currentTarget.scrollLeft);
-    $('tbody td.fixed').css('left', e.currentTarget.scrollLeft);
-    $('tfoot td.fixed').css('left', e.currentTarget.scrollLeft);
+    const table = $('#' + this.props.tableContainerId);
+    table.find('thead th.fixed').css('left', e.currentTarget.scrollLeft);
+    table.find('tbody td.fixed').css('left', e.currentTarget.scrollLeft);
+    table.find('tfoot td.fixed').css('left', e.currentTarget.scrollLeft);
   }
 
   _scrollHeader = (e) => {
@@ -1247,6 +1248,7 @@ BootstrapTable.propTypes = {
   bodyStyle: PropTypes.object,
   containerClass: PropTypes.string,
   tableContainerClass: PropTypes.string,
+  tableContainerId: PropTypes.string,
   headerContainerClass: PropTypes.string,
   bodyContainerClass: PropTypes.string,
   tableHeaderClass: PropTypes.string,
@@ -1361,6 +1363,7 @@ BootstrapTable.defaultProps = {
   bodyStyle: undefined,
   containerClass: null,
   tableContainerClass: null,
+  tableContainerId: Math.random().toString(16).slice(2),
   headerContainerClass: null,
   bodyContainerClass: null,
   tableHeaderClass: null,
